@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Retorno de Férias — Grupo Hagana</title>
+<style>
+  :root{
+    --bg: #0b1220;
+    --bg-panel: #111b2e;
+    --bg-panel-2: #0e1a2f;
+    --line: #1f3050;
+    --ink: #e7edf7;
+    --ink-dim: #93a4c2;
+    --ink-faint: #5c6c8c;
+    --accent: #ffb400;
+    --accent-dim: #7a5a13;
+    --today: #ff4d5e;
+    --tomorrow: #ff9a3d;
+    --soon: #ffd23f;
+    --week: #4dd4ac;
+    --later: #4a90e2;
+    --mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(1200px 600px at 85% -10%, rgba(255,180,0,0.06), transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, rgba(74,144,226,0.08), transparent 60%),
+      var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    min-height:100vh;
+    padding:28px 20px 60px;
+  }
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+  .wrap{max-width:1280px;margin:0 auto;}
+
+  /* HEADER */
+  header{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    flex-wrap:wrap; gap:16px;
+    padding-bottom:20px; margin-bottom:22px;
+    border-bottom:1px solid var(--line);
+  }
+  .brand-eyebrow{
+    font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--accent); margin-bottom:6px; font-weight:600;
+  }
+  h1{
+    font-size:28px; margin:0; font-weight:800; letter-spacing:-0.02em; line-height:1.1;
+  }
+  h1 span{color:var(--ink-dim); font-weight:500;}
+  .clock{
+    font-family:var(--mono); text-align:right; color:var(--ink-dim); font-size:13px; line-height:1.5;
+  }
+  .clock b{color:var(--ink); font-size:15px; display:block;}
+
+  /* STAT STRIP */
+  .stats{
+    display:grid; grid-template-columns:repeat(6,1fr); gap:1px;
+    background:var(--line); border:1px solid var(--line); border-radius:10px; overflow:hidden;
+    margin-bottom:24px;
+  }
+  .stat{
+    background:var(--bg-panel); padding:16px 18px; cursor:pointer; transition:background .15s ease;
+    position:relative;
+  }
+  .stat:hover{background:var(--bg-panel-2);}
+  .stat.active{background:#152238;}
+  .stat.active::before{
+    content:''; position:absolute; top:0; left:0; right:0; height:2px; background:var(--stat-color,var(--accent));
+  }
+  .stat-num{font-family:var(--mono); font-size:26px; font-weight:700; color:var(--stat-color,var(--ink));}
+  .stat-label{font-size:11.5px; color:var(--ink-dim); margin-top:4px; text-transform:uppercase; letter-spacing:.05em;}
+
+  /* CONTROLS */
+  .controls{
+    display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:18px;
+  }
+  .search-box{
+    flex:1 1 260px; position:relative;
+  }
+  .search-box input{
+    width:100%; background:var(--bg-panel); border:1px solid var(--line); color:var(--ink);
+    padding:11px 14px 11px 38px; border-radius:8px; font-size:14px; font-family:var(--sans);
+    outline:none; transition:border-color .15s ease;
+  }
+  .search-box input:focus{border-color:var(--accent);}
+  .search-box::before{
+    content:'⌕'; position:absolute; left:13px; top:50%; transform:translateY(-50%);
+    color:var(--ink-faint); font-size:16px; pointer-events:none;
+  }
+  select{
+    background:var(--bg-panel); border:1px solid var(--line); color:var(--ink);
+    padding:11px 30px 11px 12px; border-radius:8px; font-size:13.5px; font-family:var(--sans);
+    outline:none; cursor:pointer; appearance:none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0L5 6L10 0Z' fill='%2393a4c2'/%3E%3C/svg%3E");
+    background-repeat:no-repeat; background-position:right 12px center;
+  }
+  select:focus{border-color:var(--accent);}
+  .reset-btn{
+    background:transparent; border:1px solid var(--line); color:var(--ink-dim);
+    padding:11px 16px; border-radius:8px; font-size:13px; cursor:pointer; font-family:var(--sans);
+    transition:all .15s ease;
+  }
+  .reset-btn:hover{border-color:var(--ink-faint); color:var(--ink);}
+
+  .count-line{
+    font-family:var(--mono); font-size:12.5px; color:var(--ink-faint); margin-bottom:12px;
+  }
+  .count-line b{color:var(--ink-dim);}
+
+  /* TABLE */
+  .table-wrap{
+    border:1px solid var(--line); border-radius:10px; overflow:hidden; background:var(--bg-panel);
+  }
+  table{width:100%; border-collapse:collapse; font-size:13.5px;}
+  thead th{
+    text-align:left; padding:12px 14px; background:var(--bg-panel-2);
+    color:var(--ink-faint); font-size:10.5px; text-transform:uppercase; letter-spacing:.07em;
+    font-weight:600; border-bottom:1px solid var(--line); cursor:pointer; user-select:none;
+    white-space:nowrap;
+  }
+  thead th:hover{color:var(--ink-dim);}
+  thead th.sorted{color:var(--accent);}
+  thead th .arrow{font-size:9px; margin-left:3px; opacity:.7;}
+  tbody tr{border-bottom:1px solid var(--line); transition:background .1s ease;}
+  tbody tr:last-child{border-bottom:none;}
+  tbody tr:hover{background:var(--bg-panel-2);}
+  tbody td{padding:11px 14px; vertical-align:middle;}
+  .name-cell{font-weight:600; color:var(--ink);}
+  .sub-cell{color:var(--ink-faint); font-size:11.5px; margin-top:2px;}
+  .empresa-tag{
+    font-family:var(--mono); font-size:10px; padding:2px 7px; border-radius:4px; letter-spacing:.03em;
+    display:inline-block;
+  }
+  .empresa-tag.servicos{background:rgba(74,144,226,0.15); color:#7fb2f5;}
+  .empresa-tag.seguranca{background:rgba(255,180,0,0.15); color:var(--accent);}
+
+  .badge{
+    font-family:var(--mono); font-size:11px; font-weight:700; padding:4px 9px; border-radius:20px;
+    display:inline-flex; align-items:center; gap:5px; white-space:nowrap;
+  }
+  .badge::before{content:''; width:6px; height:6px; border-radius:50%; background:currentColor;}
+  .badge.b-today{background:rgba(255,77,94,0.14); color:var(--today);}
+  .badge.b-tomorrow{background:rgba(255,154,61,0.14); color:var(--tomorrow);}
+  .badge.b-soon{background:rgba(255,210,63,0.14); color:var(--soon);}
+  .badge.b-week{background:rgba(77,212,172,0.14); color:var(--week);}
+  .badge.b-later{background:rgba(74,144,226,0.14); color:var(--later);}
+  .badge.b-past{background:rgba(92,108,140,0.14); color:var(--ink-faint);}
+
+  .date-cell{font-family:var(--mono); font-size:13px;}
+  .days-cell{font-family:var(--mono); font-weight:700;}
+
+  .empty-state{
+    text-align:center; padding:60px 20px; color:var(--ink-faint);
+  }
+  .empty-state .icon{font-size:32px; margin-bottom:10px; opacity:.5;}
+
+  footer{
+    margin-top:18px; text-align:center; color:var(--ink-faint); font-size:11.5px; font-family:var(--mono);
+  }
+
+  @media (max-width:900px){
+    .stats{grid-template-columns:repeat(3,1fr);}
+    .table-wrap{overflow-x:auto;}
+    table{min-width:820px;}
+  }
+  @media (max-width:560px){
+    .stats{grid-template-columns:repeat(2,1fr);}
+    h1{font-size:22px;}
+  }
+
+  /* UPLOAD PANEL */
+  .upload-panel{
+    border:1px solid var(--line); border-radius:10px; background:var(--bg-panel);
+    padding:14px 16px; margin-bottom:18px;
+  }
+  .upload-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+  .upload-btn{
+    background:rgba(255,180,0,0.1); border:1px solid var(--accent-dim); color:var(--accent);
+    padding:10px 16px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer;
+    font-family:var(--sans); transition:all .15s ease; display:inline-flex; align-items:center; gap:7px;
+  }
+  .upload-btn:hover{background:rgba(255,180,0,0.18); border-color:var(--accent);}
+  .upload-btn.loading{opacity:.6; pointer-events:none;}
+  .upload-hint{font-size:12px; color:var(--ink-faint); font-family:var(--mono); flex:1 1 220px;}
+  .upload-log{
+    margin-top:12px; padding-top:12px; border-top:1px solid var(--line);
+    font-family:var(--mono); font-size:12px; line-height:1.7; max-height:160px; overflow-y:auto;
+  }
+  .upload-log:empty{display:none; border-top:none; margin-top:0; padding-top:0;}
+  .log-ok{color:var(--week);}
+  .log-warn{color:var(--tomorrow);}
+  .log-err{color:var(--today);}
+  .log-info{color:var(--ink-faint);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div>
+      <div class="brand-eyebrow">Grupo Hagana · Controle Operacional</div>
+      <h1>Retorno de Férias <span>— Ago/Set 2026</span></h1>
+    </div>
+    <div class="clock">
+      <b id="today-label">30 de julho de 2026</b>
+      <span id="totalLabel">61 colaboradores em férias no período</span>
+    </div>
+  </header>
+
+  <div class="upload-panel">
+    <div class="upload-row">
+      <label class="upload-btn" id="uploadBtnLabel" for="pdfInput">⇪ Enviar PDF(s) de férias</label>
+      <input type="file" id="pdfInput" accept="application/pdf" multiple style="display:none;">
+      <button class="reset-btn" id="clearDataBtn" title="Apaga todos os registros e começa do zero">Limpar todos os dados</button>
+      <span class="upload-hint">Aceita vários PDFs (Serviços e Segurança) ao mesmo tempo · registros existentes com o mesmo RE são atualizados</span>
+    </div>
+    <div class="upload-log" id="uploadLog"></div>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="controls">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Buscar por nome, cliente ou local...">
+    </div>
+    <select id="empresaFilter">
+      <option value="">Todas as empresas</option>
+      <option value="Serviços">Hagana Serviços RJ</option>
+      <option value="Segurança">Hagana Segurança RJ</option>
+    </select>
+    <select id="areaFilter">
+      <option value="">Todas as áreas</option>
+    </select>
+    <select id="cargoFilter">
+      <option value="">Todos os cargos</option>
+    </select>
+    <button class="reset-btn" id="resetBtn">Limpar filtros</button>
+  </div>
+
+  <div class="count-line" id="countLine"></div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th data-key="nome">Colaborador <span class="arrow"></span></th>
+          <th data-key="empresa">Empresa <span class="arrow"></span></th>
+          <th data-key="cliente">Cliente / Local <span class="arrow"></span></th>
+          <th data-key="cargo">Cargo <span class="arrow"></span></th>
+          <th data-key="inicio">Início Férias <span class="arrow"></span></th>
+          <th data-key="fim">Fim Férias <span class="arrow"></span></th>
+          <th data-key="retorno">Retorno <span class="arrow"></span></th>
+          <th data-key="diasRestantes">Faltam <span class="arrow"></span></th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div class="empty-state" id="emptyState" style="display:none;">
+      <div class="icon">◌</div>
+      Nenhum colaborador encontrado com esses filtros.
+    </div>
+  </div>
+
+  <footer>Fonte: Programação de Férias — HK Engenharia SAR2G · Gerado a partir dos PDFs enviados · atualize enviando novos PDFs acima</footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+// ---------- helpers ----------
+function d(str){ // dd/mm/yyyy -> Date
+  const [dd,mm,yyyy] = str.split('/').map(Number);
+  return new Date(yyyy, mm-1, dd);
+}
+function addDays(date, n){
+  const nd = new Date(date);
+  nd.setDate(nd.getDate()+n);
+  return nd;
+}
+function fmt(date){
+  const dd = String(date.getDate()).padStart(2,'0');
+  const mm = String(date.getMonth()+1).padStart(2,'0');
+  const yyyy = date.getFullYear();
+  return `${dd}/${mm}/${yyyy}`;
+}
+const WEEKDAYS = ['dom','seg','ter','qua','qui','sex','sáb'];
+function weekday(date){ return WEEKDAYS[date.getDay()]; }
+function titleCase(str){
+  const small = new Set(['da','de','do','das','dos','e']);
+  return str.toLowerCase().split(' ').filter(Boolean).map((w,i)=>{
+    if(i>0 && small.has(w)) return w;
+    return w.charAt(0).toUpperCase()+w.slice(1);
+  }).join(' ');
+}
+
+// TODAY é sempre a data real de hoje, calculada no momento em que a página é aberta,
+// assim os contadores continuam corretos mesmo sem reenviar PDFs novos.
+const TODAY = new Date();
+TODAY.setHours(0,0,0,0);
+document.getElementById('today-label').textContent =
+  TODAY.toLocaleDateString('pt-BR', {day:'numeric', month:'long', year:'numeric'});
+
+// ---------- dados-semente (importados originalmente dos PDFs de 30/07/2026) ----------
+const raw = [
+{nome:"Alessandro da Silva", empresa:"Serviços", cliente:"Cond Edif Green Park Residence", cargo:"Porteiro", area:"Alfa Noturno", inicio:"08/08/2026", fim:"06/09/2026"},
+{nome:"Gabriel Figueiro da Silva", empresa:"Serviços", cliente:"Baker", cargo:"Operador de CFTV Bilíngue", area:"Gama Diurno", inicio:"11/08/2026", fim:"25/08/2026"},
+{nome:"Joas Marinho da Silva", empresa:"Serviços", cliente:"Kaasas", cargo:"Vigia", area:"Alfa Noturno", inicio:"13/08/2026", fim:"01/09/2026"},
+{nome:"Maria Antonia Januario", empresa:"Serviços", cliente:"Cond Atlantico Bait", cargo:"Auxiliar de Serviços Gerais", area:"F.RJ Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
+{nome:"Matheus Gomes da Silva", empresa:"Serviços", cliente:"Lac Premier", cargo:"Vigia", area:"Alfa Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
+{nome:"Paulo Roberto de Jesus", empresa:"Serviços", cliente:"Chacara 92", cargo:"Auxiliar de Serviços Gerais", area:"F.RJ Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
+{nome:"Jose Ronaldo dos Ramos", empresa:"Serviços", cliente:"Iluminato", cargo:"Vigia", area:"Omega Diurno", inicio:"12/08/2026", fim:"31/08/2026"},
+{nome:"Isabelly Cristina dos Santos Oliveira", empresa:"Serviços", cliente:"Aquarius Residencial", cargo:"Porteiro", area:"Alfa Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
+{nome:"Miguel Angelo Oliveira da Silva", empresa:"Serviços", cliente:"Barki Centro Empresarial", cargo:"Porteiro", area:"Alfa Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
+{nome:"Marcelo Fernandes Felippe", empresa:"Serviços", cliente:"Assoc Cultural Memorial do Holocausto", cargo:"Porteiro", area:"Omega Noturno", inicio:"12/08/2026", fim:"31/08/2026"},
+{nome:"Rodrigo Carvalho Rodrigues da Silva", empresa:"Serviços", cliente:"Baker", cargo:"Porteiro", area:"Gama Diurno", inicio:"10/08/2026", fim:"29/08/2026"},
+{nome:"Fabiano Teixeira da Silva", empresa:"Serviços", cliente:"Viktoria Park", cargo:"Porteiro", area:"Omega Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
+{nome:"Janio Liberato Cavalcante", empresa:"Serviços", cliente:"Cond Grupamento Resid Via Privilege", cargo:"Porteiro", area:"Alfa Noturno", inicio:"08/08/2026", fim:"06/09/2026"},
+{nome:"Daniel de Aguiar Lyra", empresa:"Serviços", cliente:"Vila del Mar", cargo:"Vigia", area:"Alfa Noturno", inicio:"12/08/2026", fim:"31/08/2026"},
+{nome:"Nilson Carlos Machado de Castro", empresa:"Serviços", cliente:"Ipanema Bussiness", cargo:"Porteiro", area:"Omega Diurno", inicio:"10/08/2026", fim:"08/09/2026"},
+{nome:"Erick Rodolfo Pacheco de Souza", empresa:"Serviços", cliente:"Reserva Técnica", cargo:"Vigia", area:"Alfa Noturno", inicio:"08/08/2026", fim:"06/09/2026"},
+{nome:"Gabriel Barreto dos Santos", empresa:"Serviços", cliente:"Coronado", cargo:"Zelador", area:"F.RJ Diurno", inicio:"12/08/2026", fim:"31/08/2026"},
+{nome:"Jefferson Gomes Dantas da Silva", empresa:"Serviços", cliente:"Lac Premier", cargo:"Porteiro", area:"Alfa Diurno", inicio:"12/08/2026", fim:"31/08/2026"},
+{nome:"Ronald Ramos de Souza", empresa:"Serviços", cliente:"Escola Canadense de Niteroi", cargo:"Porteiro", area:"Omega Diurno", inicio:"11/08/2026", fim:"30/08/2026"},
+{nome:"Camile Rocha Peres", empresa:"Serviços", cliente:"Reserva Técnica", cargo:"Porteiro", area:"Alfa Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
+{nome:"Kaio Sampaio Oliveira da Silva", empresa:"Serviços", cliente:"Vila del Mar", cargo:"Vigia", area:"Alfa Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
+{nome:"Gabriel Soares dos Santos", empresa:"Serviços", cliente:"Arua", cargo:"Vigia Condutor", area:"Omega Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
+{nome:"Rodrigo Justo Carreiro", empresa:"Serviços", cliente:"Venezuela", cargo:"Porteiro", area:"Omega Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
+{nome:"Jamille dos Santos Moreira", empresa:"Serviços", cliente:"Assoc Pedra de Itauna", cargo:"Porteiro", area:"Alfa Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
+
+{nome:"Raquel Jacintho do Carmo", empresa:"Segurança", cliente:"Shopping da Caixa", cargo:"Vigilante", area:"Alfa Noturno", inicio:"08/08/2026", fim:"06/09/2026"},
+{nome:"Oswaldo Macedo Costa Junior", empresa:"Segurança", cliente:"São Vicente", cargo:"Vigilante", area:"Omega Diurno", inicio:"09/08/2026", fim:"28/08/2026"},
+{nome:"Francisco Emerson Alves de Souza", empresa:"Segurança", cliente:"Joao Moreira Salles", cargo:"Vig. Seg. Pessoal Privado", area:"Alfa Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
+{nome:"Julio Cesar Cerqueira Silva", empresa:"Segurança", cliente:"Baker", cargo:"Gerente Operacional", area:"Gama Diurno", inicio:"11/08/2026", fim:"30/08/2026"},
+{nome:"Suzan da Silva Ferreira Morais", empresa:"Segurança", cliente:"Colegio Cruzeiro", cargo:"Vigilante", area:"Omega Diurno", inicio:"12/08/2026", fim:"31/08/2026"},
+{nome:"Andre Luiz de Oliveira Doin", empresa:"Segurança", cliente:"Haganá Segurança RJ", cargo:"Vigilante Chefe de Turma", area:"Administrativo Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
+{nome:"Thais Stephanie Sant Anna M Bezerra", empresa:"Segurança", cliente:"Bothanica Nature", cargo:"Vigilante", area:"Alfa Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
+{nome:"Bianca Pereira da Silva", empresa:"Segurança", cliente:"Baker - Niteroi", cargo:"Vigilante Chefe de Turma", area:"Omega Diurno", inicio:"10/08/2026", fim:"29/08/2026"},
+{nome:"Josivania Gomes de Aquino", empresa:"Segurança", cliente:"Reserva Técnica", cargo:"Vigilante Monit Eletrônico", area:"Alfa Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
+{nome:"Washington Oliveira da Silva", empresa:"Segurança", cliente:"Reserva Técnica", cargo:"Vigilante", area:"Alfa Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
+{nome:"Genilson Santos de Oliveira", empresa:"Segurança", cliente:"Arena Leme Hotel", cargo:"Vigilante", area:"Omega Diurno", inicio:"06/08/2026", fim:"04/09/2026"},
+{nome:"Flavio Teixeira", empresa:"Segurança", cliente:"Condominio River Droite", cargo:"Vigilante", area:"Alfa Noturno", inicio:"08/08/2026", fim:"06/09/2026"},
+{nome:"Kassiane Dias Pires", empresa:"Segurança", cliente:"Haganá Segurança RJ", cargo:"Assistente Administrativo Pl", area:"Administrativo Diurno", inicio:"03/08/2026", fim:"22/08/2026"},
+{nome:"Reinaldo Arao da Silva de Sousa", empresa:"Segurança", cliente:"Saint Barth", cargo:"Fiscal de Posto", area:"Alfa Noturno", inicio:"11/08/2026", fim:"30/08/2026"},
+{nome:"Marcos Roberto Lopes Ferreira", empresa:"Segurança", cliente:"Marilia Ferreira de Araujo Coutinho", cargo:"Vigilante Seg. Pessoal", area:"Omega Noturno", inicio:"08/08/2026", fim:"27/08/2026"},
+{nome:"Andrea Ramos Pereira", empresa:"Segurança", cliente:"Gavea Golf and Country Club", cargo:"Vigilante", area:"Alfa Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
+{nome:"Edson Macedo de Carvalho", empresa:"Segurança", cliente:"Embaixada de Israel", cargo:"Vigilante Seg. Pessoal", area:"Omega Diurno", inicio:"10/08/2026", fim:"29/08/2026"},
+{nome:"Nayanne Cristina Rosa Melo", empresa:"Segurança", cliente:"Baker - BTC Fundão", cargo:"Vigilante", area:"Omega Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
+{nome:"Thiago Soares de Magalhaes", empresa:"Segurança", cliente:"Baker - Niteroi", cargo:"Vigilante", area:"Omega Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
+{nome:"Luiz Paulo Fernandes da Silva", empresa:"Segurança", cliente:"Cond Chácara Froes", cargo:"Vigilante Chefe de Turma", area:"Omega Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
+{nome:"Charles Max da Silva de Jesus", empresa:"Segurança", cliente:"Reserva Técnica", cargo:"Vigilante", area:"Alfa Diurno", inicio:"12/08/2026", fim:"31/08/2026"},
+{nome:"Antonio Carlos Ferreira Silva de Sales", empresa:"Segurança", cliente:"IBM", cargo:"Coordenador Oper", area:"Omega Diurno", inicio:"03/08/2026", fim:"01/09/2026"},
+{nome:"Cleber Dias dos Santos", empresa:"Segurança", cliente:"Reserva Técnica", cargo:"Vigilante", area:"Alfa Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
+{nome:"Julio Tenorio", empresa:"Segurança", cliente:"Terminal Garagem Menezes Cortes", cargo:"Vigilante Chefe de Turma", area:"Omega Noturno", inicio:"09/08/2026", fim:"07/09/2026"},
+{nome:"Laercio Casemiro Mendes", empresa:"Segurança", cliente:"Terminal Garagem Menezes Cortes", cargo:"Vigilante", area:"Omega Diurno", inicio:"10/08/2026", fim:"08/09/2026"},
+{nome:"Jair do Nascimento Carvalho", empresa:"Segurança", cliente:"Baker", cargo:"Vigilante", area:"Gama Noturno", inicio:"10/08/2026", fim:"29/08/2026"},
+{nome:"Frerlan Cezar Queiroz", empresa:"Segurança", cliente:"Venezuela", cargo:"Vigilante", area:"Omega Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
+{nome:"Joao Paulo da Silva Ribeiro", empresa:"Segurança", cliente:"Baker", cargo:"Vigilante", area:"Gama Noturno", inicio:"11/08/2026", fim:"30/08/2026"},
+{nome:"Vinicius Padilha do Nascimento", empresa:"Segurança", cliente:"Assoc Pedra de Itauna", cargo:"Vigilante", area:"Alfa Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
+{nome:"Cosme Andre Freire da Silva", empresa:"Segurança", cliente:"Hospital Prevent Senior", cargo:"Vigilante", area:"Omega Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
+{nome:"Daniel Wilson Lima da Silva", empresa:"Segurança", cliente:"Albert Einstein - Botafogo", cargo:"Vigilante Monit Eletrônico", area:"Omega Noturno", inicio:"08/08/2026", fim:"06/09/2026"},
+{nome:"Angelo de Azevedo Ferreira", empresa:"Segurança", cliente:"Baker - Niteroi", cargo:"Vigilante", area:"Omega Diurno", inicio:"11/08/2026", fim:"30/08/2026"},
+{nome:"Janaina Peres", empresa:"Segurança", cliente:"Reserva Técnica", cargo:"Vigilante", area:"Alfa Noturno", inicio:"12/08/2026", fim:"31/08/2026"},
+{nome:"Alef Carlos Monteiro da Silva", empresa:"Segurança", cliente:"Igua Rio de Janeiro", cargo:"Vigilante Motor/Motociclista", area:"Omega Noturno", inicio:"09/08/2026", fim:"07/09/2026"},
+{nome:"Anderson Caetano Moura Teixeira", empresa:"Segurança", cliente:"Centro Empresarial Luiz Severiano", cargo:"Vigilante", area:"Omega Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
+{nome:"Andrey Dornellas Travassos", empresa:"Segurança", cliente:"Haganá Segurança RJ", cargo:"Auxiliar Administrativo", area:"Administrativo Diurno", inicio:"06/08/2026", fim:"04/09/2026"},
+{nome:"Elizangela Coelho Paiva", empresa:"Segurança", cliente:"Reserva Técnica", cargo:"Vigilante", area:"Alfa Noturno", inicio:"12/08/2026", fim:"31/08/2026"}
+];
+
+// ---------- store (fonte única da verdade) ----------
+// Cada registro fica guardado num Map por chave única, o que permite que o
+// upload de um novo PDF ATUALIZE um registro existente (mesma chave "RE")
+// em vez de duplicá-lo, e ADICIONE quem for novo.
+//
+// PERSISTÊNCIA: o conteúdo do store é salvo no localStorage do navegador
+// (chave STORAGE_KEY) sempre que muda. Assim, os PDFs importados continuam
+// disponíveis mesmo depois de fechar a aba ou reabrir o arquivo depois.
+const STORAGE_KEY = 'hagana-ferias-store-v1';
+const store = new Map();
+
+function saveStore(){
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(store.entries())));
+  }catch(err){
+    console.error('Falha ao salvar no localStorage:', err);
+  }
+}
+
+function loadStoreFromStorage(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return false;
+    const entries = JSON.parse(raw);
+    if(!Array.isArray(entries) || entries.length === 0) return false;
+    store.clear();
+    entries.forEach(([k,v])=> store.set(k,v));
+    return true;
+  }catch(err){
+    console.error('Falha ao ler do localStorage:', err);
+    return false;
+  }
+}
+
+// Se já existem dados salvos de uma visita anterior, usa eles.
+// Caso contrário (primeiro acesso), começa com os dados de exemplo.
+const hadSavedData = loadStoreFromStorage();
+if(!hadSavedData){
+  raw.forEach((r,i)=>{
+    store.set('seed-'+i, {
+      codigo:null, nome:r.nome, empresa:r.empresa,
+      cliente:r.cliente, local:r.cliente, cargo:r.cargo, area:r.area,
+      inicio:r.inicio, fim:r.fim
+    });
+  });
+  saveStore();
+}
+
+let data = []; // reconstruído a partir do store a cada mudança
+
+function rebuildData(){
+  data = Array.from(store.values()).map((r,i)=>{
+    const inicioD = d(r.inicio);
+    const fimD = d(r.fim);
+    const retornoD = addDays(fimD,1); // volta ao trabalho no dia seguinte ao fim das férias
+    const diffMs = retornoD - TODAY;
+    const diasRestantes = Math.round(diffMs / 86400000);
+    return {
+      id:i, codigo:r.codigo, nome:r.nome, empresa:r.empresa, cliente:r.cliente,
+      local:r.local, cargo:r.cargo, area:r.area,
+      inicioD, fimD, retornoD, diasRestantes
+    };
+  });
+  document.getElementById('totalLabel').textContent =
+    `${data.length} colaborador${data.length===1?'':'es'} em férias no período`;
+}
+
+// ---------- status classification ----------
+function statusOf(dias){
+  if(dias < 0) return 'past';
+  if(dias === 0) return 'today';
+  if(dias === 1) return 'tomorrow';
+  if(dias === 2) return 'soon';
+  if(dias <= 7) return 'week';
+  return 'later';
+}
+function statusLabel(dias, status){
+  if(status==='past') return 'Já retornou';
+  if(status==='today') return 'Retorna hoje';
+  if(status==='tomorrow') return 'Retorna amanhã';
+  if(status==='soon') return `Retorna em ${dias} dias`;
+  if(status==='week') return `Retorna em ${dias} dias`;
+  return `Retorna em ${dias} dias`;
+}
+
+// ---------- populate select filters ----------
+const areaSel = document.getElementById('areaFilter');
+const cargoSel = document.getElementById('cargoFilter');
+function rebuildFilters(){
+  const prevArea = areaSel.value, prevCargo = cargoSel.value;
+  const areas = [...new Set(data.map(r=>r.area))].sort();
+  const cargos = [...new Set(data.map(r=>r.cargo))].sort();
+  areaSel.innerHTML = '<option value="">Todas as áreas</option>';
+  areas.forEach(a=>{
+    const o = document.createElement('option'); o.value=a; o.textContent=a; areaSel.appendChild(o);
+  });
+  cargoSel.innerHTML = '<option value="">Todos os cargos</option>';
+  cargos.forEach(c=>{
+    const o = document.createElement('option'); o.value=c; o.textContent=c; cargoSel.appendChild(o);
+  });
+  if(areas.includes(prevArea)) areaSel.value = prevArea;
+  if(cargos.includes(prevCargo)) cargoSel.value = prevCargo;
+}
+
+// ---------- stat cards config ----------
+const statCards = [
+  {key:'today', label:'Retornam hoje', color:'var(--today)'},
+  {key:'tomorrow', label:'Retornam amanhã', color:'var(--tomorrow)'},
+  {key:'soon', label:'Depois de amanhã', color:'var(--soon)'},
+  {key:'week', label:'Nos próximos 7 dias', color:'var(--week)'},
+  {key:'later', label:'Mais de 7 dias', color:'var(--later)'},
+  {key:'past', label:'Já retornaram', color:'var(--ink-faint)'},
+];
+
+let activeStat = null;
+let sortKey = 'diasRestantes';
+let sortDir = 1;
+
+function renderStats(){
+  const counts = {};
+  statCards.forEach(s=>counts[s.key]=0);
+  data.forEach(r=>{ counts[statusOf(r.diasRestantes)]++; });
+
+  const el = document.getElementById('stats');
+  el.innerHTML = '';
+  statCards.forEach(s=>{
+    const div = document.createElement('div');
+    div.className = 'stat' + (activeStat===s.key ? ' active':'');
+    div.style.setProperty('--stat-color', s.color);
+    div.innerHTML = `<div class="stat-num">${counts[s.key]}</div><div class="stat-label">${s.label}</div>`;
+    div.onclick = ()=>{ activeStat = (activeStat===s.key)? null : s.key; render(); };
+    el.appendChild(div);
+  });
+}
+
+function badgeHtml(dias, status){
+  const label = statusLabel(dias, status);
+  return `<span class="badge b-${status}">${label}</span>`;
+}
+
+function render(){
+  renderStats();
+
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  const empresaF = document.getElementById('empresaFilter').value;
+  const areaF = document.getElementById('areaFilter').value;
+  const cargoF = document.getElementById('cargoFilter').value;
+
+  let filtered = data.filter(r=>{
+    if(activeStat && statusOf(r.diasRestantes) !== activeStat) return false;
+    if(empresaF && r.empresa !== empresaF) return false;
+    if(areaF && r.area !== areaF) return false;
+    if(cargoF && r.cargo !== cargoF) return false;
+    if(q){
+      const hay = (r.nome+' '+r.cliente+' '+r.cargo+' '+r.area).toLowerCase();
+      if(!hay.includes(q)) return false;
+    }
+    return true;
+  });
+
+  filtered.sort((a,b)=>{
+    let va = a[sortKey], vb = b[sortKey];
+    if(va instanceof Date){ va = va.getTime(); vb = vb.getTime(); }
+    if(typeof va === 'string'){ return va.localeCompare(vb) * sortDir; }
+    return (va - vb) * sortDir;
+  });
+
+  document.getElementById('countLine').innerHTML =
+    `Exibindo <b>${filtered.length}</b> de <b>${data.length}</b> colaboradores`;
+
+  const tbody = document.getElementById('tbody');
+  const emptyState = document.getElementById('emptyState');
+  tbody.innerHTML = '';
+
+  if(filtered.length===0){
+    emptyState.style.display = 'block';
+  } else {
+    emptyState.style.display = 'none';
+    filtered.forEach(r=>{
+      const status = statusOf(r.diasRestantes);
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>
+          <div class="name-cell">${r.nome}</div>
+        </td>
+        <td><span class="empresa-tag ${r.empresa==='Serviços'?'servicos':'seguranca'}">${r.empresa==='Serviços'?'Serviços':'Segurança'}</span></td>
+        <td>
+          ${r.cliente}${(r.local && r.local!==r.cliente) ? `<div class="sub-cell">${r.local}</div>` : ''}
+        </td>
+        <td>${r.cargo}<div class="sub-cell">${r.area}</div></td>
+        <td class="date-cell">${fmt(r.inicioD)}</td>
+        <td class="date-cell">${fmt(r.fimD)}</td>
+        <td class="date-cell">${fmt(r.retornoD)} <span class="sub-cell" style="display:inline;">(${weekday(r.retornoD)})</span></td>
+        <td>${badgeHtml(r.diasRestantes, status)}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // update sort header indicators
+  document.querySelectorAll('thead th').forEach(th=>{
+    th.classList.remove('sorted');
+    th.querySelector('.arrow').textContent = '';
+    if(th.dataset.key === sortKey){
+      th.classList.add('sorted');
+      th.querySelector('.arrow').textContent = sortDir===1 ? '▲' : '▼';
+    }
+  });
+}
+
+// ---------- events ----------
+document.getElementById('searchInput').addEventListener('input', render);
+document.getElementById('empresaFilter').addEventListener('change', render);
+document.getElementById('areaFilter').addEventListener('change', render);
+document.getElementById('cargoFilter').addEventListener('change', render);
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  document.getElementById('searchInput').value='';
+  document.getElementById('empresaFilter').value='';
+  document.getElementById('areaFilter').value='';
+  document.getElementById('cargoFilter').value='';
+  activeStat = null;
+  render();
+});
+document.querySelectorAll('thead th').forEach(th=>{
+  th.addEventListener('click', ()=>{
+    const key = th.dataset.key;
+    // map header keys to data props
+    const map = {nome:'nome', empresa:'empresa', cliente:'cliente', cargo:'cargo', inicio:'inicioD', fim:'fimD', retorno:'retornoD', diasRestantes:'diasRestantes'};
+    const propKey = map[key];
+    if(sortKey === propKey){ sortDir *= -1; } else { sortKey = propKey; sortDir = 1; }
+    render();
+  });
+});
+
+document.getElementById('clearDataBtn').addEventListener('click', ()=>{
+  if(!confirm('Isso apaga todos os colaboradores da lista (inclusive os dados de exemplo). Continuar?')) return;
+  store.clear();
+  saveStore();
+  activeStat = null;
+  rebuildData();
+  rebuildFilters();
+  render();
+  logMsg('info', 'Lista zerada. Envie um PDF para começar de novo.');
+});
+
+// ================= LEITURA E IMPORTAÇÃO DE PDF =================
+const uploadLog = document.getElementById('uploadLog');
+function logMsg(kind, text){
+  const line = document.createElement('div');
+  line.className = 'log-' + kind;
+  line.textContent = text;
+  uploadLog.appendChild(line);
+  uploadLog.scrollTop = uploadLog.scrollHeight;
+}
+
+// Reconstrói as linhas de texto de cada página do PDF a partir das posições
+// (x,y) dos fragmentos de texto, já que o pdf.js não devolve o texto já
+// quebrado em linhas.
+async function extractPdfLines(file){
+  const buf = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({data:buf}).promise;
+  const lines = [];
+  const Y_TOLERANCE = 3; // pt — agrupa fragmentos que estão levemente desalinhados na mesma linha visual
+  for(let p=1; p<=pdf.numPages; p++){
+    const page = await pdf.getPage(p);
+    const content = await page.getTextContent();
+    const items = content.items.map(it=>({str:it.str, x:it.transform[4], y:it.transform[5], width:it.width}));
+    // topo -> base (em espaço PDF, y maior = mais acima), depois esquerda -> direita
+    items.sort((a,b)=> (b.y - a.y) || (a.x - b.x));
+
+    const groups = [];
+    let current = [], currentY = null;
+    items.forEach(it=>{
+      if(currentY === null || Math.abs(it.y - currentY) <= Y_TOLERANCE){
+        current.push(it);
+        if(currentY === null) currentY = it.y;
+      } else {
+        groups.push(current);
+        current = [it];
+        currentY = it.y;
+      }
+    });
+    if(current.length) groups.push(current);
+
+    groups.forEach(g=>{
+      g.sort((a,b)=>a.x-b.x);
+      let line = '';
+      let prevEndX = null;
+      g.forEach(it=>{
+        if(prevEndX !== null && (it.x - prevEndX) > 2) line += ' ';
+        line += it.str;
+        prevEndX = it.x + it.width;
+      });
+      line = line.trim();
+      if(line) lines.push(line);
+    });
+  }
+  return lines;
+}
+
+// Interpreta as linhas extraídas do relatório "Programação de Férias" (SAR2G / HK Engenharia)
+function parsePdfLines(lines){
+  const headerRe = /^RE:\s*(\d+)\s*NOME:?\s*(.*?)\s*CLIENTE:\s*(.*?)\s*LOCAL:\s*(.*?)\s*CARGO:\s*(.*?)\s*(?:Á|A)REA\s*:\s*(.+)$/i;
+  // Não fixamos o texto "SIM"/"NÃO" no regex (evita problemas de acentuação), e não exigimos
+  // fim de linha logo após as datas, pois alguns relatórios colam "DIAS DE FÉRIAS"/"DIAS DE ABONO"
+  // na mesma linha, depois das duas datas.
+  const dateRe = /^\S+\s+(\d{2}\/\d{2}\/\d{4})\s+(\d{2}\/\d{2}\/\d{4})/;
+  const empresaRe = /^EMPRESA:\s*(.+)$/;
+
+  let currentEmpresa = null;
+  let pending = null;
+  const records = [];
+  const warnings = [];
+
+  lines.forEach(line=>{
+    const eMatch = line.match(empresaRe);
+    if(eMatch){
+      const val = eMatch[1].toUpperCase();
+      if(val.includes('SEGURAN')) currentEmpresa = 'Segurança';
+      else if(val.includes('SERVI')) currentEmpresa = 'Serviços';
+      return;
+    }
+    const hMatch = line.match(headerRe);
+    if(hMatch){
+      if(pending) warnings.push(`RE ${pending.codigo} (${pending.nome}): datas de férias não encontradas, registro ignorado.`);
+      pending = {
+        codigo: hMatch[1],
+        nome: titleCase(hMatch[2].trim()),
+        cliente: titleCase(hMatch[3].trim()),
+        local: titleCase(hMatch[4].trim()),
+        cargo: titleCase(hMatch[5].trim()),
+        area: titleCase(hMatch[6].trim()),
+        empresa: currentEmpresa || 'Serviços'
+      };
+      return;
+    }
+    const dMatch = line.match(dateRe);
+    if(dMatch && pending){
+      pending.inicio = dMatch[1];
+      pending.fim = dMatch[2];
+      records.push(pending);
+      pending = null;
+    }
+  });
+  if(pending) warnings.push(`RE ${pending.codigo} (${pending.nome}): datas de férias não encontradas, registro ignorado.`);
+
+  return {records, warnings};
+}
+
+async function handlePdfFiles(fileList){
+  const files = Array.from(fileList);
+  if(files.length === 0) return;
+
+  const btnLabel = document.getElementById('uploadBtnLabel');
+  btnLabel.classList.add('loading');
+  btnLabel.textContent = 'Lendo PDF(s)...';
+
+  for(const file of files){
+    try{
+      const lines = await extractPdfLines(file);
+      const {records, warnings} = parsePdfLines(lines);
+
+      if(records.length === 0){
+        logMsg('err', `${file.name}: nenhum registro reconhecido. O formato deste PDF pode ser diferente do esperado.`);
+        continue;
+      }
+
+      let novos = 0, atualizados = 0;
+      records.forEach(r=>{
+        const key = 'RE-' + r.codigo;
+        if(store.has(key)) atualizados++; else novos++;
+        store.set(key, r);
+      });
+
+      logMsg('ok', `${file.name}: ${records.length} registro${records.length===1?'':'s'} lido${records.length===1?'':'s'} (${novos} novo${novos===1?'':'s'}, ${atualizados} atualizado${atualizados===1?'':'s'}).`);
+      warnings.forEach(w=>logMsg('warn', `${file.name}: ${w}`));
+    }catch(err){
+      console.error(err);
+      logMsg('err', `${file.name}: falha ao ler o PDF (${err.message || err}).`);
+    }
+  }
+
+  saveStore();
+  rebuildData();
+  rebuildFilters();
+  render();
+
+  btnLabel.classList.remove('loading');
+  btnLabel.textContent = '⇪ Enviar PDF(s) de férias';
+}
+
+document.getElementById('pdfInput').addEventListener('change', (e)=>{
+  handlePdfFiles(e.target.files);
+  e.target.value = ''; // permite reenviar o mesmo arquivo depois
+});
+
+// ---------- inicialização ----------
+rebuildData();
+rebuildFilters();
+render();
+</script>
+</body>
+</html>
