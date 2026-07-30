@@ -205,7 +205,7 @@
   <header>
     <div>
       <div class="brand-eyebrow">Grupo Hagana · Controle Operacional</div>
-      <h1>Retorno de Férias <span>— Ago/Set 2026</span></h1>
+      <h1>Retorno de Férias <span>— Jul/Ago 2026</span></h1>
     </div>
     <div class="clock">
       <b id="today-label">30 de julho de 2026</b>
@@ -307,70 +307,70 @@ TODAY.setHours(0,0,0,0);
 document.getElementById('today-label').textContent =
   TODAY.toLocaleDateString('pt-BR', {day:'numeric', month:'long', year:'numeric'});
 
-// ---------- dados-semente (importados originalmente dos PDFs de 30/07/2026) ----------
-const raw = [
-{nome:"Alessandro da Silva", empresa:"Serviços", cliente:"Cond Edif Green Park Residence", cargo:"Porteiro", area:"Alfa Noturno", inicio:"08/08/2026", fim:"06/09/2026"},
-{nome:"Gabriel Figueiro da Silva", empresa:"Serviços", cliente:"Baker", cargo:"Operador de CFTV Bilíngue", area:"Gama Diurno", inicio:"11/08/2026", fim:"25/08/2026"},
-{nome:"Joas Marinho da Silva", empresa:"Serviços", cliente:"Kaasas", cargo:"Vigia", area:"Alfa Noturno", inicio:"13/08/2026", fim:"01/09/2026"},
-{nome:"Maria Antonia Januario", empresa:"Serviços", cliente:"Cond Atlantico Bait", cargo:"Auxiliar de Serviços Gerais", area:"F.RJ Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
-{nome:"Matheus Gomes da Silva", empresa:"Serviços", cliente:"Lac Premier", cargo:"Vigia", area:"Alfa Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
-{nome:"Paulo Roberto de Jesus", empresa:"Serviços", cliente:"Chacara 92", cargo:"Auxiliar de Serviços Gerais", area:"F.RJ Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
-{nome:"Jose Ronaldo dos Ramos", empresa:"Serviços", cliente:"Iluminato", cargo:"Vigia", area:"Omega Diurno", inicio:"12/08/2026", fim:"31/08/2026"},
-{nome:"Isabelly Cristina dos Santos Oliveira", empresa:"Serviços", cliente:"Aquarius Residencial", cargo:"Porteiro", area:"Alfa Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
-{nome:"Miguel Angelo Oliveira da Silva", empresa:"Serviços", cliente:"Barki Centro Empresarial", cargo:"Porteiro", area:"Alfa Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
-{nome:"Marcelo Fernandes Felippe", empresa:"Serviços", cliente:"Assoc Cultural Memorial do Holocausto", cargo:"Porteiro", area:"Omega Noturno", inicio:"12/08/2026", fim:"31/08/2026"},
-{nome:"Rodrigo Carvalho Rodrigues da Silva", empresa:"Serviços", cliente:"Baker", cargo:"Porteiro", area:"Gama Diurno", inicio:"10/08/2026", fim:"29/08/2026"},
-{nome:"Fabiano Teixeira da Silva", empresa:"Serviços", cliente:"Viktoria Park", cargo:"Porteiro", area:"Omega Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
-{nome:"Janio Liberato Cavalcante", empresa:"Serviços", cliente:"Cond Grupamento Resid Via Privilege", cargo:"Porteiro", area:"Alfa Noturno", inicio:"08/08/2026", fim:"06/09/2026"},
-{nome:"Daniel de Aguiar Lyra", empresa:"Serviços", cliente:"Vila del Mar", cargo:"Vigia", area:"Alfa Noturno", inicio:"12/08/2026", fim:"31/08/2026"},
-{nome:"Nilson Carlos Machado de Castro", empresa:"Serviços", cliente:"Ipanema Bussiness", cargo:"Porteiro", area:"Omega Diurno", inicio:"10/08/2026", fim:"08/09/2026"},
-{nome:"Erick Rodolfo Pacheco de Souza", empresa:"Serviços", cliente:"Reserva Técnica", cargo:"Vigia", area:"Alfa Noturno", inicio:"08/08/2026", fim:"06/09/2026"},
-{nome:"Gabriel Barreto dos Santos", empresa:"Serviços", cliente:"Coronado", cargo:"Zelador", area:"F.RJ Diurno", inicio:"12/08/2026", fim:"31/08/2026"},
-{nome:"Jefferson Gomes Dantas da Silva", empresa:"Serviços", cliente:"Lac Premier", cargo:"Porteiro", area:"Alfa Diurno", inicio:"12/08/2026", fim:"31/08/2026"},
-{nome:"Ronald Ramos de Souza", empresa:"Serviços", cliente:"Escola Canadense de Niteroi", cargo:"Porteiro", area:"Omega Diurno", inicio:"11/08/2026", fim:"30/08/2026"},
-{nome:"Camile Rocha Peres", empresa:"Serviços", cliente:"Reserva Técnica", cargo:"Porteiro", area:"Alfa Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
-{nome:"Kaio Sampaio Oliveira da Silva", empresa:"Serviços", cliente:"Vila del Mar", cargo:"Vigia", area:"Alfa Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
-{nome:"Gabriel Soares dos Santos", empresa:"Serviços", cliente:"Arua", cargo:"Vigia Condutor", area:"Omega Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
-{nome:"Rodrigo Justo Carreiro", empresa:"Serviços", cliente:"Venezuela", cargo:"Porteiro", area:"Omega Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
-{nome:"Jamille dos Santos Moreira", empresa:"Serviços", cliente:"Assoc Pedra de Itauna", cargo:"Porteiro", area:"Alfa Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
-
-{nome:"Raquel Jacintho do Carmo", empresa:"Segurança", cliente:"Shopping da Caixa", cargo:"Vigilante", area:"Alfa Noturno", inicio:"08/08/2026", fim:"06/09/2026"},
-{nome:"Oswaldo Macedo Costa Junior", empresa:"Segurança", cliente:"São Vicente", cargo:"Vigilante", area:"Omega Diurno", inicio:"09/08/2026", fim:"28/08/2026"},
-{nome:"Francisco Emerson Alves de Souza", empresa:"Segurança", cliente:"Joao Moreira Salles", cargo:"Vig. Seg. Pessoal Privado", area:"Alfa Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
-{nome:"Julio Cesar Cerqueira Silva", empresa:"Segurança", cliente:"Baker", cargo:"Gerente Operacional", area:"Gama Diurno", inicio:"11/08/2026", fim:"30/08/2026"},
-{nome:"Suzan da Silva Ferreira Morais", empresa:"Segurança", cliente:"Colegio Cruzeiro", cargo:"Vigilante", area:"Omega Diurno", inicio:"12/08/2026", fim:"31/08/2026"},
-{nome:"Andre Luiz de Oliveira Doin", empresa:"Segurança", cliente:"Haganá Segurança RJ", cargo:"Vigilante Chefe de Turma", area:"Administrativo Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
-{nome:"Thais Stephanie Sant Anna M Bezerra", empresa:"Segurança", cliente:"Bothanica Nature", cargo:"Vigilante", area:"Alfa Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
-{nome:"Bianca Pereira da Silva", empresa:"Segurança", cliente:"Baker - Niteroi", cargo:"Vigilante Chefe de Turma", area:"Omega Diurno", inicio:"10/08/2026", fim:"29/08/2026"},
-{nome:"Josivania Gomes de Aquino", empresa:"Segurança", cliente:"Reserva Técnica", cargo:"Vigilante Monit Eletrônico", area:"Alfa Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
-{nome:"Washington Oliveira da Silva", empresa:"Segurança", cliente:"Reserva Técnica", cargo:"Vigilante", area:"Alfa Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
-{nome:"Genilson Santos de Oliveira", empresa:"Segurança", cliente:"Arena Leme Hotel", cargo:"Vigilante", area:"Omega Diurno", inicio:"06/08/2026", fim:"04/09/2026"},
-{nome:"Flavio Teixeira", empresa:"Segurança", cliente:"Condominio River Droite", cargo:"Vigilante", area:"Alfa Noturno", inicio:"08/08/2026", fim:"06/09/2026"},
-{nome:"Kassiane Dias Pires", empresa:"Segurança", cliente:"Haganá Segurança RJ", cargo:"Assistente Administrativo Pl", area:"Administrativo Diurno", inicio:"03/08/2026", fim:"22/08/2026"},
-{nome:"Reinaldo Arao da Silva de Sousa", empresa:"Segurança", cliente:"Saint Barth", cargo:"Fiscal de Posto", area:"Alfa Noturno", inicio:"11/08/2026", fim:"30/08/2026"},
-{nome:"Marcos Roberto Lopes Ferreira", empresa:"Segurança", cliente:"Marilia Ferreira de Araujo Coutinho", cargo:"Vigilante Seg. Pessoal", area:"Omega Noturno", inicio:"08/08/2026", fim:"27/08/2026"},
-{nome:"Andrea Ramos Pereira", empresa:"Segurança", cliente:"Gavea Golf and Country Club", cargo:"Vigilante", area:"Alfa Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
-{nome:"Edson Macedo de Carvalho", empresa:"Segurança", cliente:"Embaixada de Israel", cargo:"Vigilante Seg. Pessoal", area:"Omega Diurno", inicio:"10/08/2026", fim:"29/08/2026"},
-{nome:"Nayanne Cristina Rosa Melo", empresa:"Segurança", cliente:"Baker - BTC Fundão", cargo:"Vigilante", area:"Omega Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
-{nome:"Thiago Soares de Magalhaes", empresa:"Segurança", cliente:"Baker - Niteroi", cargo:"Vigilante", area:"Omega Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
-{nome:"Luiz Paulo Fernandes da Silva", empresa:"Segurança", cliente:"Cond Chácara Froes", cargo:"Vigilante Chefe de Turma", area:"Omega Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
-{nome:"Charles Max da Silva de Jesus", empresa:"Segurança", cliente:"Reserva Técnica", cargo:"Vigilante", area:"Alfa Diurno", inicio:"12/08/2026", fim:"31/08/2026"},
-{nome:"Antonio Carlos Ferreira Silva de Sales", empresa:"Segurança", cliente:"IBM", cargo:"Coordenador Oper", area:"Omega Diurno", inicio:"03/08/2026", fim:"01/09/2026"},
-{nome:"Cleber Dias dos Santos", empresa:"Segurança", cliente:"Reserva Técnica", cargo:"Vigilante", area:"Alfa Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
-{nome:"Julio Tenorio", empresa:"Segurança", cliente:"Terminal Garagem Menezes Cortes", cargo:"Vigilante Chefe de Turma", area:"Omega Noturno", inicio:"09/08/2026", fim:"07/09/2026"},
-{nome:"Laercio Casemiro Mendes", empresa:"Segurança", cliente:"Terminal Garagem Menezes Cortes", cargo:"Vigilante", area:"Omega Diurno", inicio:"10/08/2026", fim:"08/09/2026"},
-{nome:"Jair do Nascimento Carvalho", empresa:"Segurança", cliente:"Baker", cargo:"Vigilante", area:"Gama Noturno", inicio:"10/08/2026", fim:"29/08/2026"},
-{nome:"Frerlan Cezar Queiroz", empresa:"Segurança", cliente:"Venezuela", cargo:"Vigilante", area:"Omega Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
-{nome:"Joao Paulo da Silva Ribeiro", empresa:"Segurança", cliente:"Baker", cargo:"Vigilante", area:"Gama Noturno", inicio:"11/08/2026", fim:"30/08/2026"},
-{nome:"Vinicius Padilha do Nascimento", empresa:"Segurança", cliente:"Assoc Pedra de Itauna", cargo:"Vigilante", area:"Alfa Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
-{nome:"Cosme Andre Freire da Silva", empresa:"Segurança", cliente:"Hospital Prevent Senior", cargo:"Vigilante", area:"Omega Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
-{nome:"Daniel Wilson Lima da Silva", empresa:"Segurança", cliente:"Albert Einstein - Botafogo", cargo:"Vigilante Monit Eletrônico", area:"Omega Noturno", inicio:"08/08/2026", fim:"06/09/2026"},
-{nome:"Angelo de Azevedo Ferreira", empresa:"Segurança", cliente:"Baker - Niteroi", cargo:"Vigilante", area:"Omega Diurno", inicio:"11/08/2026", fim:"30/08/2026"},
-{nome:"Janaina Peres", empresa:"Segurança", cliente:"Reserva Técnica", cargo:"Vigilante", area:"Alfa Noturno", inicio:"12/08/2026", fim:"31/08/2026"},
-{nome:"Alef Carlos Monteiro da Silva", empresa:"Segurança", cliente:"Igua Rio de Janeiro", cargo:"Vigilante Motor/Motociclista", area:"Omega Noturno", inicio:"09/08/2026", fim:"07/09/2026"},
-{nome:"Anderson Caetano Moura Teixeira", empresa:"Segurança", cliente:"Centro Empresarial Luiz Severiano", cargo:"Vigilante", area:"Omega Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
-{nome:"Andrey Dornellas Travassos", empresa:"Segurança", cliente:"Haganá Segurança RJ", cargo:"Auxiliar Administrativo", area:"Administrativo Diurno", inicio:"06/08/2026", fim:"04/09/2026"},
-{nome:"Elizangela Coelho Paiva", empresa:"Segurança", cliente:"Reserva Técnica", cargo:"Vigilante", area:"Alfa Noturno", inicio:"12/08/2026", fim:"31/08/2026"}
+// ---------- dados-semente (importados dos PDFs de 30/07/2026 16:20, período 30/06 - 30/07/2026) ----------
+const records = [
+{codigo:"15831", nome:"Carlos Henrique S das Dores", empresa:"Segurança", cliente:"Reserva Técnica", local:"Tratativas Juridicas Rj", cargo:"Vigilante", area:"Alfa Diurno", inicio:"04/07/2026", fim:"02/08/2026"},
+{codigo:"15849", nome:"Fernando Gomes de Moura", empresa:"Segurança", cliente:"Reserva Técnica", local:"Rj Reserva Tecnica Alfa", cargo:"Fiscal de Posto", area:"Alfa Diurno", inicio:"26/07/2026", fim:"24/08/2026"},
+{codigo:"15923", nome:"Daniel Valenca da Silva", empresa:"Segurança", cliente:"Colegio Cruzeiro", local:"Colegio Cruzeiro Centro- Galpao", cargo:"Vigilante", area:"Omega Diurno", inicio:"09/07/2026", fim:"07/08/2026"},
+{codigo:"16297", nome:"Manolo Rodrigo do Carmo Santana", empresa:"Segurança", cliente:"Joao Moreira Salles", local:"Joao Moreira Salles", cargo:"Vigilante Monit Eletronico - R", area:"Alfa Noturno", inicio:"09/07/2026", fim:"07/08/2026"},
+{codigo:"17433", nome:"Henrique Freitas Rodrigues", empresa:"Segurança", cliente:"Condominio River Droite", local:"Condominio River Droite", cargo:"Supervisor de Posto", area:"Alfa Noturno", inicio:"12/07/2026", fim:"31/07/2026"},
+{codigo:"17920", nome:"Willian Cavalcante Jaques", empresa:"Segurança", cliente:"Casa da Ladeira", local:"Beatrice Weiller Correa do Lago", cargo:"Vigilante Seg.pessoal", area:"Omega Noturno", inicio:"09/07/2026", fim:"07/08/2026"},
+{codigo:"18004", nome:"Adriana Neves da Silva", empresa:"Segurança", cliente:"Hospital Prevent Senior", local:"Hospital Prevent Senior - Botafogo", cargo:"Vigilante", area:"Omega Noturno", inicio:"12/07/2026", fim:"31/07/2026"},
+{codigo:"18172", nome:"Jean Ribeiro Paim dos Santos", empresa:"Segurança", cliente:"Baker", local:"Baker - Bhge Macae", cargo:"Vigilante", area:"Gama Noturno", inicio:"09/07/2026", fim:"07/08/2026"},
+{codigo:"18741", nome:"Juniana Aparecida Barbosa Apolinario", empresa:"Segurança", cliente:"Reserva Técnica", local:"Rj Reserva Tecnica Alfa", cargo:"Vigilante", area:"Alfa Diurno", inicio:"12/07/2026", fim:"04/08/2026"},
+{codigo:"19444", nome:"Max Leandro Sant Anna Martins", empresa:"Segurança", cliente:"Condominio Vale de Itaipu", local:"Condominio Vale de Itaipu", cargo:"Vigilante", area:"Omega Diurno", inicio:"12/07/2026", fim:"31/07/2026"},
+{codigo:"19909", nome:"Willian da Conceiçao Souza", empresa:"Segurança", cliente:"Baker", local:"Baker", cargo:"Vigilante", area:"Gama Diurno", inicio:"08/07/2026", fim:"06/08/2026"},
+{codigo:"20200", nome:"Marystela Lima Macedo", empresa:"Segurança", cliente:"Reserva Técnica", local:"Rj Ferista", cargo:"Vigilante", area:"Alfa Noturno", inicio:"08/07/2026", fim:"06/08/2026"},
+{codigo:"20242", nome:"Emanuel do Couto Silva dos Santos", empresa:"Segurança", cliente:"Haganá Segurança Rj", local:"Adm Operacional", cargo:"Auxiliar Administrativo", area:"Administrativo Diurno", inicio:"01/07/2026", fim:"20/07/2026"},
+{codigo:"20264", nome:"Jaime dos Santos Martins", empresa:"Segurança", cliente:"Assoc Pedra de Itauna", local:"Assoc Pedra de Itauna", cargo:"Supervisor de Posto", area:"Alfa Diurno", inicio:"16/07/2026", fim:"14/08/2026"},
+{codigo:"20499", nome:"Carlos Renato Blanc Rodrigues", empresa:"Segurança", cliente:"Sahuglio Comercial e Locadora - Savoy", local:"Sahuglio Comercial e Locadora - Savoy", cargo:"Vigilante Cond Ciclomotor", area:"Omega Noturno", inicio:"08/07/2026", fim:"06/08/2026"},
+{codigo:"20971", nome:"Willer Jose da Silva Queiroz", empresa:"Segurança", cliente:"Cond. Saint Tropez", local:"Cond. Saint Tropez", cargo:"Vigilante", area:"Alfa Noturno", inicio:"09/07/2026", fim:"07/08/2026"},
+{codigo:"21427", nome:"Wallace Luis Goncalves de Araujo Pereira", empresa:"Segurança", cliente:"Aquarius Residencial", local:"Aquarius Residencial", cargo:"Fiscal de Posto", area:"Alfa Diurno", inicio:"09/07/2026", fim:"07/08/2026"},
+{codigo:"21445", nome:"Felipe de Oliveira", empresa:"Segurança", cliente:"Marilia Ferreira de Araujo Coutinho", local:"Marilia Ferreira de Araujo Coutinho", cargo:"Vigilante Seg.pessoal", area:"Omega Noturno", inicio:"12/07/2026", fim:"31/07/2026"},
+{codigo:"22035", nome:"Daniel Dutra de Souza", empresa:"Segurança", cliente:"Condominio Vale de Itaipu", local:"Condominio Vale de Itaipu", cargo:"Vigilante", area:"Omega Noturno", inicio:"09/07/2026", fim:"07/08/2026"},
+{codigo:"22046", nome:"Lailla Cristina Santos da Silva", empresa:"Segurança", cliente:"Baker", local:"Baker - Niteroi", cargo:"Vigilante", area:"Omega Diurno", inicio:"12/07/2026", fim:"31/07/2026"},
+{codigo:"22410", nome:"Carlos Alberto Pereira da Silva", empresa:"Segurança", cliente:"Centauro", local:"Centauro - Cd Duque de Caxias", cargo:"Vigilante", area:"Alfa Noturno", inicio:"12/07/2026", fim:"31/07/2026"},
+{codigo:"22886", nome:"Yan Oliveira dos Santos", empresa:"Segurança", cliente:"Saint Barth", local:"Saint Barth", cargo:"Vigilante", area:"Alfa Noturno", inicio:"15/07/2026", fim:"03/08/2026"},
+{codigo:"23923", nome:"Jorge de Assis Antonio", empresa:"Segurança", cliente:"Terminal Garagem Menezes Cortes", local:"Terminal Garagem Menezes Cortes", cargo:"Vigilante", area:"Omega Diurno", inicio:"11/07/2026", fim:"30/07/2026"},
+{codigo:"23925", nome:"Josias de Araujo Santos", empresa:"Segurança", cliente:"Terminal Garagem Menezes Cortes", local:"Terminal Garagem Menezes Cortes", cargo:"Vigilante", area:"Omega Diurno", inicio:"09/07/2026", fim:"07/08/2026"},
+{codigo:"23930", nome:"Marcia Sampaio dos Santos", empresa:"Segurança", cliente:"Terminal Garagem Menezes Cortes", local:"Terminal Garagem Menezes Cortes", cargo:"Vigilante", area:"Omega Diurno", inicio:"12/07/2026", fim:"31/07/2026"},
+{codigo:"23938", nome:"Witter Noe de Sousa Santiago Rodrigues", empresa:"Segurança", cliente:"Baker", local:"Baker - Niteroi", cargo:"Vigilante", area:"Omega Diurno", inicio:"09/07/2026", fim:"07/08/2026"},
+{codigo:"24147", nome:"Luan de Sa Miranda", empresa:"Segurança", cliente:"Baker", local:"Baker - Niteroi", cargo:"Vigilante", area:"Omega Diurno", inicio:"09/07/2026", fim:"07/08/2026"},
+{codigo:"24164", nome:"Wilson Luis do Nascimento", empresa:"Segurança", cliente:"Promenade Apart Hoteis", local:"Promenade Apart Hoteis", cargo:"Vigilante", area:"Omega Diurno", inicio:"09/07/2026", fim:"07/08/2026"},
+{codigo:"24177", nome:"Humberto Guedes Pereira", empresa:"Segurança", cliente:"Baker", local:"Baker", cargo:"Vigilante", area:"Gama Noturno", inicio:"08/07/2026", fim:"06/08/2026"},
+{codigo:"24307", nome:"Douglas Ribeiro Rocha", empresa:"Segurança", cliente:"Arena Copacabana Hotel", local:"Arena Copacabana Hotel", cargo:"Vigilante", area:"Alfa Diurno", inicio:"11/07/2026", fim:"30/07/2026"},
+{codigo:"24734", nome:"Raphael da Conceicao de Souza", empresa:"Segurança", cliente:"Ares Aeroespacial e Defesa", local:"Ares Aeroespacial e Defesa", cargo:"Vigilante", area:"Omega Diurno", inicio:"12/07/2026", fim:"31/07/2026"},
+{codigo:"24998", nome:"Jeferson Santos Martins", empresa:"Segurança", cliente:"Shopping da Caixa", local:"Shopping da Caixa", cargo:"Vigilante", area:"Alfa Noturno", inicio:"12/07/2026", fim:"31/07/2026"},
+{codigo:"27524", nome:"Deivid Brito Patricio Correa", empresa:"Segurança", cliente:"Reserva Técnica", local:"Rj Reserva Tecnica Alfa", cargo:"Vigilante", area:"Alfa Noturno", inicio:"08/07/2026", fim:"06/08/2026"},
+{codigo:"24483", nome:"Flavio Severino Duarte", empresa:"Serviços", cliente:"Assoc Cultural Memorial do Holocausto", local:"Assoc Cultural Memorial do Holocausto", cargo:"Porteiro", area:"Omega Noturno", inicio:"12/07/2026", fim:"31/07/2026"},
+{codigo:"24592", nome:"Edson Lopes dos Santos", empresa:"Serviços", cliente:"Elisa Soares Ribeiro", local:"Elisa Soares Ribeiro", cargo:"Porteiro", area:"Omega Diurno", inicio:"13/07/2026", fim:"01/08/2026"},
+{codigo:"28491", nome:"Rafael Melquiades do Nascimento", empresa:"Serviços", cliente:"Lac Premier", local:"Lac Premier", cargo:"Porteiro", area:"Alfa Noturno", inicio:"12/07/2026", fim:"31/07/2026"},
+{codigo:"28591", nome:"Jorge Luis Souza de Oliveira", empresa:"Serviços", cliente:"Gavea Golf And Country Club", local:"Gavea Golf And Country Club", cargo:"Porteiro", area:"Alfa Diurno", inicio:"09/07/2026", fim:"07/08/2026"},
+{codigo:"31791", nome:"Raquel da Silva Dutra", empresa:"Serviços", cliente:"Haganá Serviços Rj", local:"Operacional", cargo:"Supervisor Limpeza", area:"Administrativo Diurno", inicio:"06/07/2026", fim:"04/08/2026"},
+{codigo:"31912", nome:"Gesse de Lima Silveira", empresa:"Serviços", cliente:"Vila Del Mar", local:"Vila Del Mar", cargo:"Vigia", area:"Alfa Diurno", inicio:"08/07/2026", fim:"06/08/2026"},
+{codigo:"34056", nome:"Daniel da Silva Sbano", empresa:"Serviços", cliente:"Baker", local:"Baker - Bela Vista", cargo:"Porteiro", area:"Gama Noturno", inicio:"09/07/2026", fim:"07/08/2026"},
+{codigo:"34205", nome:"Flavio Borges Junior", empresa:"Serviços", cliente:"Cond Atlantico Bait", local:"Cond Atlantico Bait", cargo:"Porteiro", area:"Omega Diurno", inicio:"08/07/2026", fim:"06/08/2026"},
+{codigo:"39387", nome:"Higor Ribeiro Fialho", empresa:"Serviços", cliente:"Condominio Chacara San Francisco", local:"Condominio Chacara San Francisco", cargo:"Porteiro", area:"Omega Noturno", inicio:"12/07/2026", fim:"31/07/2026"},
+{codigo:"42794", nome:"Alvaro de Souza Miranda Abreu", empresa:"Serviços", cliente:"Baker", local:"Baker", cargo:"Operador de Cftv Bilingue", area:"Gama Diurno", inicio:"11/07/2026", fim:"30/07/2026"},
+{codigo:"49306", nome:"Charles Araujo Jeronimo", empresa:"Serviços", cliente:"Iluminato", local:"Iluminato", cargo:"Porteiro", area:"Omega Noturno", inicio:"11/07/2026", fim:"30/07/2026"},
+{codigo:"49517", nome:"Luana Goncalves das Chagas", empresa:"Serviços", cliente:"Saint Barth", local:"Saint Barth", cargo:"Porteiro", area:"Alfa Noturno", inicio:"09/07/2026", fim:"07/08/2026"},
+{codigo:"50466", nome:"Jose Lucas Souza da Luz", empresa:"Serviços", cliente:"Cond Oka Residence Lagoa", local:"Cond Oka Residence Lagoa", cargo:"Vigia", area:"Omega Diurno", inicio:"01/07/2026", fim:"30/07/2026"},
+{codigo:"52384", nome:"Wagner da Silva Barbosa", empresa:"Serviços", cliente:"Aquarius Residencial", local:"Aquarius Residencial", cargo:"Porteiro", area:"Alfa Diurno", inicio:"09/07/2026", fim:"07/08/2026"},
+{codigo:"56433", nome:"Gabriel da Silva Nogueira", empresa:"Serviços", cliente:"Lac Premier", local:"Lac Premier", cargo:"Porteiro", area:"Alfa Diurno", inicio:"09/07/2026", fim:"07/08/2026"},
+{codigo:"56599", nome:"Julio Cesar Duarte de Oliveira", empresa:"Serviços", cliente:"Leblon Empresarial", local:"Leblon Empresarial", cargo:"Porteiro", area:"Omega Diurno", inicio:"08/07/2026", fim:"06/08/2026"},
+{codigo:"56875", nome:"Guilherme Luis Ferreira Costa", empresa:"Serviços", cliente:"Comercial Na Estrada do Joa", local:"Comercial Na Estrada do Joa", cargo:"Vigia", area:"Alfa Diurno", inicio:"08/07/2026", fim:"06/08/2026"},
+{codigo:"57939", nome:"Carlos Eduardo da Silva Pereira", empresa:"Serviços", cliente:"Vila Del Mar", local:"Vila Del Mar", cargo:"Vigia", area:"Alfa Diurno", inicio:"09/07/2026", fim:"07/08/2026"},
+{codigo:"58202", nome:"Carlos Henrique Serra Navega", empresa:"Serviços", cliente:"Leblon Tower", local:"Leblon Tower", cargo:"Vigia", area:"Omega Diurno", inicio:"13/07/2026", fim:"01/08/2026"},
+{codigo:"58502", nome:"Ana Carolina Moraes da Silveira", empresa:"Serviços", cliente:"Cond Atlantico Bait", local:"Cond Atlantico Bait", cargo:"Auxiliar de Serviços Gerais", area:"F.rj Diurno", inicio:"09/07/2026", fim:"01/08/2026"},
+{codigo:"58557", nome:"Beatriz Bento dos Santos Souza", empresa:"Serviços", cliente:"Saint Barth", local:"Saint Barth", cargo:"Porteiro", area:"Alfa Diurno", inicio:"09/07/2026", fim:"07/08/2026"},
+{codigo:"58882", nome:"Geisa Nogueira de Souza", empresa:"Serviços", cliente:"Condominio Vale de Itaipu", local:"Condominio Vale de Itaipu", cargo:"Operador Cftv", area:"Omega Diurno", inicio:"09/07/2026", fim:"07/08/2026"},
+{codigo:"59210", nome:"Taylan Angel Roque dos Santos", empresa:"Serviços", cliente:"Green Park 3000 e 4000", local:"Green Park 3000 e 4000", cargo:"Porteiro", area:"Alfa Diurno", inicio:"12/07/2026", fim:"31/07/2026"},
+{codigo:"59686", nome:"Neilson da Paixao de Sena", empresa:"Serviços", cliente:"Escola Canadense de Niteroi", local:"Escola Canadense de Niteroi", cargo:"Porteiro", area:"Omega Diurno", inicio:"13/07/2026", fim:"01/08/2026"},
+{codigo:"59885", nome:"Leonardo Souza de Freitas", empresa:"Serviços", cliente:"Arua", local:"Arua", cargo:"Porteiro", area:"Omega Diurno", inicio:"09/07/2026", fim:"07/08/2026"},
+{codigo:"61055", nome:"Kelvin de Castro Silva", empresa:"Serviços", cliente:"Bayside Shopping", local:"Bayside Shopping", cargo:"Porteiro", area:"Alfa Noturno", inicio:"08/07/2026", fim:"06/08/2026"},
+{codigo:"61192", nome:"Amaro Brito Chalaca Junior", empresa:"Serviços", cliente:"Saint Barth", local:"Saint Barth", cargo:"Mensageiro", area:"Alfa Diurno", inicio:"09/07/2026", fim:"07/08/2026"},
+{codigo:"61273", nome:"Fabio dos Santos Martins da Silva", empresa:"Serviços", cliente:"Reserva Técnica", local:"Rj Reserva Tecnica Alfa", cargo:"Porteiro", area:"Alfa Diurno", inicio:"01/07/2026", fim:"30/07/2026"},
+{codigo:"61801", nome:"Rafael de Souza Gomes", empresa:"Serviços", cliente:"Cond Edif Green Park Residence 1000", local:"Cond Edif Green Park Residence 1000", cargo:"Porteiro", area:"Alfa Diurno", inicio:"09/07/2026", fim:"07/08/2026"},
 ];
 
 // ---------- store (fonte única da verdade) ----------
@@ -407,19 +407,19 @@ function loadStoreFromStorage(){
   }
 }
 
-// Se já existem dados salvos de uma visita anterior, usa eles.
-// Caso contrário (primeiro acesso), começa com os dados de exemplo.
-const hadSavedData = loadStoreFromStorage();
-if(!hadSavedData){
-  raw.forEach((r,i)=>{
-    store.set('seed-'+i, {
-      codigo:null, nome:r.nome, empresa:r.empresa,
-      cliente:r.cliente, local:r.cliente, cargo:r.cargo, area:r.area,
-      inicio:r.inicio, fim:r.fim
-    });
+// Carrega o que já estiver salvo no navegador (ex.: PDFs enviados manualmente)
+// e depois MESCLA os dados-semente deste arquivo por cima, por RE. Assim, toda
+// vez que este HTML for atualizado com PDFs novos, os dados aparecem mesmo que
+// o navegador já tivesse uma versão antiga salva no localStorage.
+loadStoreFromStorage();
+records.forEach(r=>{
+  store.set('RE-'+r.codigo, {
+    codigo:r.codigo, nome:r.nome, empresa:r.empresa,
+    cliente:r.cliente, local:r.local, cargo:r.cargo, area:r.area,
+    inicio:r.inicio, fim:r.fim
   });
-  saveStore();
-}
+});
+saveStore();
 
 let data = []; // reconstruído a partir do store a cada mudança
 
