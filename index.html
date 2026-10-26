@@ -222,7 +222,7 @@
       <label class="upload-btn upload-btn-alt" id="uploadBtnLabel" for="pdfInput">⇪ Enviar PDF(s) de férias</label>
       <input type="file" id="pdfInput" accept="application/pdf" multiple style="display:none;">
       <button class="reset-btn" id="clearDataBtn" title="Apaga todos os registros e começa do zero">Limpar todos os dados</button>
-      <span class="upload-hint">Aceita Excel (colunas RE, NOMEFUNC, NOMEEMPRESA...) ou PDF · vários arquivos ao mesmo tempo · registros existentes com o mesmo RE são atualizados</span>
+      <span class="upload-hint">Aceita Excel (colunas RE, NOMEFUNC, NOMELOCAL, NOMECARGO, DTINICIOFERIAS, DTFIMFERIAS...) ou PDF · vários arquivos ao mesmo tempo · registros existentes com o mesmo RE são atualizados</span>
     </div>
     <div class="upload-log" id="uploadLog"></div>
   </div>
@@ -301,6 +301,7 @@ function titleCase(str){
   const small = new Set(['da','de','do','das','dos','e']);
   return str.toLowerCase().split(' ').filter(Boolean).map((w,i)=>{
     if(i>0 && small.has(w)) return w;
+    if(w==='cftv') return 'CFTV';
     return w.charAt(0).toUpperCase()+w.slice(1);
   }).join(' ');
 }
@@ -312,132 +313,62 @@ TODAY.setHours(0,0,0,0);
 document.getElementById('today-label').textContent =
   TODAY.toLocaleDateString('pt-BR', {day:'numeric', month:'long', year:'numeric'});
 
-// ---------- dados-semente (importados do Excel Ferias_RJ.xlsx em 31/08/2026) ----------
+// ---------- dados-semente (importados do Excel PROGRAMAÇÃO_DE_FÉRIAS_NOVEMBRO_UNIFICADA.xlsx em 26/10/2026) ----------
 const records = [
-{codigo:"31844", nome:"Maria Antonia Januario", empresa:"Serviços", cliente:"Cond Atlantico Bait", local:"Cond Atlantico Bait", cargo:"", area:"F.rj Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
-{codigo:"33862", nome:"Joseph Anderson Vieira dos Santos", empresa:"Serviços", cliente:"Gavea Golf And Country Club", local:"Gavea Golf And Country Club", cargo:"", area:"Alfa Diurno", inicio:"08/09/2026", fim:"07/10/2026"},
-{codigo:"34179", nome:"Matheus Gomes da Silva", empresa:"Serviços", cliente:"Lac Premier", local:"Lac Premier", cargo:"", area:"Alfa Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
-{codigo:"43855", nome:"Paulo Roberto de Jesus", empresa:"Serviços", cliente:"Chacara 92", local:"Chacara 92", cargo:"", area:"F.rj Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
-{codigo:"44206", nome:"Jose Ronaldo dos Ramos", empresa:"Serviços", cliente:"Iluminato", local:"Iluminato", cargo:"", area:"Omega Diurno", inicio:"12/08/2026", fim:"31/08/2026"},
-{codigo:"44208", nome:"Karen Helen Santos da Silva", empresa:"Serviços", cliente:"Aquarius Residencial", local:"Aquarius Residencial", cargo:"", area:"Alfa Diurno", inicio:"09/09/2026", fim:"08/10/2026"},
-{codigo:"44275", nome:"Paulo Roberto Gomes de Oliveira Junior", empresa:"Serviços", cliente:"Barki", local:"Barki Centro Empresarial", cargo:"", area:"Alfa Diurno", inicio:"08/09/2026", fim:"07/10/2026"},
-{codigo:"44704", nome:"Raquel Candida da Silva de Castro", empresa:"Serviços", cliente:"Edificio Gloria", local:"Edificio Gloria", cargo:"", area:"Omega Diurno", inicio:"09/09/2026", fim:"08/10/2026"},
-{codigo:"44705", nome:"Vanessa de Brito Dantas", empresa:"Serviços", cliente:"Reserva Técnica", local:"Rj Reserva Tecnica Alfa", cargo:"", area:"Alfa Diurno", inicio:"12/09/2026", fim:"01/10/2026"},
-{codigo:"44960", nome:"Isabelly Cristina dos Santos Oliveira", empresa:"Serviços", cliente:"Aquarius Residencial", local:"Aquarius Residencial", cargo:"", area:"Alfa Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
-{codigo:"45162", nome:"Miguel Angelo Oliveira da Silva", empresa:"Serviços", cliente:"Barki", local:"Barki Centro Empresarial", cargo:"", area:"Alfa Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
-{codigo:"50179", nome:"Patricia da Silva Nelos", empresa:"Serviços", cliente:"Baker", local:"Baker Hughes Energy", cargo:"", area:"Omega Diurno", inicio:"08/09/2026", fim:"07/10/2026"},
-{codigo:"50220", nome:"Rodrigo Carvalho Rodrigues da Silva", empresa:"Serviços", cliente:"Baker", local:"Baker", cargo:"", area:"Gama Diurno", inicio:"10/08/2026", fim:"29/08/2026"},
-{codigo:"50463", nome:"Fabiano Teixeira da Silva", empresa:"Serviços", cliente:"Viktoria Park", local:"Viktoria Park", cargo:"", area:"Omega Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
-{codigo:"53808", nome:"Diva Mota de Aragao", empresa:"Serviços", cliente:"Reserva Técnica", local:"Rj Reserva Tecnica Alfa", cargo:"", area:"Alfa Diurno", inicio:"09/09/2026", fim:"08/10/2026"},
-{codigo:"55387", nome:"Aline de Fatima Fontes", empresa:"Serviços", cliente:"Saint Barth", local:"Saint Barth", cargo:"", area:"Alfa Diurno", inicio:"08/09/2026", fim:"07/10/2026"},
-{codigo:"55882", nome:"Alexandre de Lima do Nascimento", empresa:"Serviços", cliente:"Haganá Serviços Rj", local:"Operacional", cargo:"", area:"Administrativo Diurno", inicio:"10/09/2026", fim:"29/09/2026"},
-{codigo:"58455", nome:"Nilson Carlos Machado de Castro", empresa:"Serviços", cliente:"Ipanema Bussiness", local:"Ipanema Bussiness", cargo:"", area:"Omega Diurno", inicio:"10/08/2026", fim:"08/09/2026"},
-{codigo:"58656", nome:"Michelle da Silva Duarte Rocha", empresa:"Serviços", cliente:"Reserva Técnica", local:"Rj Reserva Tecnica Alfa", cargo:"", area:"Alfa Diurno", inicio:"08/09/2026", fim:"07/10/2026"},
-{codigo:"58756", nome:"Robemir Carlos da Silva Moraes", empresa:"Serviços", cliente:"Sunrise House Gardens", local:"Sunrise House Gardens", cargo:"", area:"F.rj Diurno", inicio:"08/09/2026", fim:"07/10/2026"},
-{codigo:"58983", nome:"Kelvin Santos Gomes", empresa:"Serviços", cliente:"Fimatec", local:"Fimatec", cargo:"", area:"Omega Diurno", inicio:"09/09/2026", fim:"08/10/2026"},
-{codigo:"59346", nome:"Gabriel Barreto dos Santos", empresa:"Serviços", cliente:"Coronado", local:"Coronado", cargo:"", area:"F.rj Diurno", inicio:"12/08/2026", fim:"31/08/2026"},
-{codigo:"59377", nome:"Gisele dos Santos Rodrigues", empresa:"Serviços", cliente:"Cond Edif Villa Di Palma", local:"Cond Edif Villa Di Palma", cargo:"", area:"F.rj Diurno", inicio:"08/09/2026", fim:"07/10/2026"},
-{codigo:"59614", nome:"Jefferson Gomes Dantas da Silva", empresa:"Serviços", cliente:"Lac Premier", local:"Lac Premier", cargo:"", area:"Alfa Diurno", inicio:"12/08/2026", fim:"31/08/2026"},
-{codigo:"59684", nome:"Ronald Ramos de Souza", empresa:"Serviços", cliente:"Escola Canadense de Niteroi", local:"Canadian School Of Niteroi Itacoatiara", cargo:"", area:"Omega Diurno", inicio:"11/08/2026", fim:"30/08/2026"},
-{codigo:"59685", nome:"Camile Rocha Peres", empresa:"Serviços", cliente:"Reserva Técnica", local:"Rj Ferista", cargo:"", area:"Alfa Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
-{codigo:"59783", nome:"Kaio Sampaio Oliveira da Silva", empresa:"Serviços", cliente:"Vila Del Mar", local:"Vila Del Mar", cargo:"", area:"Alfa Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
-{codigo:"59889", nome:"Gabriel Soares dos Santos", empresa:"Serviços", cliente:"Arua", local:"Arua", cargo:"", area:"Omega Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
-{codigo:"59892", nome:"Rafael Tinoco da Silva", empresa:"Serviços", cliente:"Arua", local:"Arua", cargo:"", area:"F.rj Diurno", inicio:"08/09/2026", fim:"07/10/2026"},
-{codigo:"60558", nome:"Rodrigo Justo Carreiro", empresa:"Serviços", cliente:"Venezuela", local:"Venezuela", cargo:"", area:"Omega Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
-{codigo:"60561", nome:"Patrick da Silva Machado", empresa:"Serviços", cliente:"Arua", local:"Arua", cargo:"", area:"Omega Diurno", inicio:"08/09/2026", fim:"07/10/2026"},
-{codigo:"60831", nome:"Kissila Porto Moreira Gomes", empresa:"Serviços", cliente:"Reserva Técnica", local:"Rj Ferista", cargo:"", area:"Alfa Diurno", inicio:"08/09/2026", fim:"07/10/2026"},
-{codigo:"62297", nome:"Jamille dos Santos Moreira", empresa:"Serviços", cliente:"Assoc Pedra de Itauna", local:"Assoc Pedra de Itauna", cargo:"", area:"Alfa Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
-{codigo:"28567", nome:"Gabriel Figueiro da Silva", empresa:"Serviços", cliente:"Baker", local:"Baker", cargo:"", area:"Gama Diurno", inicio:"11/08/2026", fim:"25/08/2026"},
-{codigo:"25636", nome:"Alessandro da Silva", empresa:"Serviços", cliente:"Cond Edif Green Park Residence 1000", local:"Cond Edif Green Park Residence 1000", cargo:"", area:"Alfa Noturno", inicio:"08/08/2026", fim:"06/09/2026"},
-{codigo:"31659", nome:"Joas Marinho da Silva", empresa:"Serviços", cliente:"Kaasas", local:"Assoc. Kaasas", cargo:"", area:"Alfa Noturno", inicio:"13/08/2026", fim:"01/09/2026"},
-{codigo:"32285", nome:"Daniel Alves de Souza", empresa:"Serviços", cliente:"Aquarius Residencial", local:"Aquarius Residencial", cargo:"", area:"Alfa Noturno", inicio:"12/09/2026", fim:"01/10/2026"},
-{codigo:"40847", nome:"Gilberto Barbosa da Silva", empresa:"Serviços", cliente:"Baker", local:"Baker - Btc Fundao", cargo:"", area:"Omega Noturno", inicio:"08/09/2026", fim:"07/10/2026"},
-{codigo:"42193", nome:"Conrado Britto Guerra", empresa:"Serviços", cliente:"Baker", local:"Baker", cargo:"", area:"Gama Noturno", inicio:"08/09/2026", fim:"22/09/2026"},
-{codigo:"49509", nome:"Marcelo Fernandes Felippe", empresa:"Serviços", cliente:"Assoc Cultural Memorial do Holocausto", local:"Assoc Cultural Memorial do Holocausto", cargo:"", area:"Omega Noturno", inicio:"12/08/2026", fim:"31/08/2026"},
-{codigo:"50169", nome:"Carlos Henrique Goncalves de Menezes", empresa:"Serviços", cliente:"Cond Atlantico Bait", local:"Cond Atlantico Bait", cargo:"", area:"Omega Noturno", inicio:"09/09/2026", fim:"08/10/2026"},
-{codigo:"50447", nome:"Marcus Vinicius Camargo da Silva", empresa:"Serviços", cliente:"Assoc Amigos do Jardim Paris", local:"Assoc Amigos do Jardim Paris", cargo:"", area:"Omega Noturno", inicio:"09/09/2026", fim:"02/10/2026"},
-{codigo:"51374", nome:"Flavio Jose Marques Rosas", empresa:"Serviços", cliente:"Condominio Chacara San Francisco", local:"Condominio Chacara San Francisco", cargo:"", area:"Omega Noturno", inicio:"09/09/2026", fim:"02/10/2026"},
-{codigo:"52985", nome:"Janio Liberato Cavalcante", empresa:"Serviços", cliente:"Cond Grupamento Resid Via Privilege", local:"Cond Grupamento Resid Via Privilege", cargo:"", area:"Alfa Noturno", inicio:"08/08/2026", fim:"06/09/2026"},
-{codigo:"57584", nome:"Jeferson de Souza Rosa", empresa:"Serviços", cliente:"Bothanica Nature", local:"Bothanica Nature", cargo:"", area:"Alfa Noturno", inicio:"08/09/2026", fim:"07/10/2026"},
-{codigo:"58288", nome:"Daniel de Aguiar Lyra", empresa:"Serviços", cliente:"Vila Del Mar", local:"Vila Del Mar", cargo:"", area:"Alfa Noturno", inicio:"12/08/2026", fim:"31/08/2026"},
-{codigo:"58558", nome:"Erick Rodolfo Pacheco de Souza", empresa:"Serviços", cliente:"Reserva Técnica", local:"Rj Ferista", cargo:"", area:"Alfa Noturno", inicio:"08/08/2026", fim:"06/09/2026"},
-{codigo:"58595", nome:"Thuane Diniz Marinho Gil Morey", empresa:"Serviços", cliente:"Assoc Pedra de Itauna", local:"Assoc Pedra de Itauna", cargo:"", area:"Alfa Noturno", inicio:"09/09/2026", fim:"08/10/2026"},
-{codigo:"61272", nome:"Israel Ferreira da Silva", empresa:"Serviços", cliente:"Reserva Técnica", local:"Rj Reserva Tecnica Alfa", cargo:"", area:"Alfa Noturno", inicio:"08/09/2026", fim:"01/10/2026"},
-{codigo:"15827", nome:"Flavio Francisco de Aguiar", empresa:"Segurança", cliente:"Colegio Cruzeiro", local:"Colegio Cruzeiro Jacarepagua", cargo:"", area:"Alfa Diurno", inicio:"08/09/2026", fim:"07/10/2026"},
-{codigo:"15867", nome:"Sebastiao Rodrigues", empresa:"Segurança", cliente:"Shopping da Caixa", local:"Shopping da Caixa", cargo:"", area:"Alfa Diurno", inicio:"08/09/2026", fim:"27/09/2026"},
-{codigo:"16120", nome:"Oswaldo Macedo Costa Junior", empresa:"Segurança", cliente:"Sao Vicente", local:"Sao Vicente", cargo:"", area:"Omega Diurno", inicio:"09/08/2026", fim:"28/08/2026"},
-{codigo:"16563", nome:"Francisco Emerson Alves de Souza", empresa:"Segurança", cliente:"Joao Moreira Salles", local:"Joao Moreira Salles", cargo:"", area:"Alfa Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
-{codigo:"17186", nome:"Julio Cesar Cerqueira Silva", empresa:"Segurança", cliente:"Baker", local:"Baker - Gerencia Dedicada", cargo:"", area:"Gama Diurno", inicio:"11/08/2026", fim:"30/08/2026"},
-{codigo:"17243", nome:"Suzan da Silva Ferreira Morais", empresa:"Segurança", cliente:"Colegio Cruzeiro", local:"Colegio Cruzeiro Centro", cargo:"", area:"Omega Diurno", inicio:"12/08/2026", fim:"31/08/2026"},
-{codigo:"17470", nome:"Andre Luiz de Oliveira Doin", empresa:"Segurança", cliente:"Haganá Segurança Rj", local:"Operacional", cargo:"", area:"Administrativo Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
-{codigo:"18565", nome:"Michel dos Santos Lugao", empresa:"Segurança", cliente:"Colegio Cruzeiro", local:"Humboldt (retiro)", cargo:"", area:"Alfa Diurno", inicio:"08/09/2026", fim:"07/10/2026"},
-{codigo:"18745", nome:"Thais Stephanie Sant Anna M Bezerra", empresa:"Segurança", cliente:"Bothanica Nature", local:"Bothanica Nature", cargo:"", area:"Alfa Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
-{codigo:"19216", nome:"Bianca Pereira da Silva", empresa:"Segurança", cliente:"Baker", local:"Baker - Niteroi", cargo:"", area:"Omega Diurno", inicio:"10/08/2026", fim:"29/08/2026"},
-{codigo:"19222", nome:"Josivania Gomes de Aquino", empresa:"Segurança", cliente:"Reserva Técnica", local:"Rj Ferista", cargo:"", area:"Alfa Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
-{codigo:"19318", nome:"Rodrigo de Oliveira", empresa:"Segurança", cliente:"Baker", local:"Baker - Niteroi", cargo:"", area:"Omega Diurno", inicio:"12/09/2026", fim:"01/10/2026"},
-{codigo:"19380", nome:"Pablo Luiz Joio", empresa:"Segurança", cliente:"Haganá Segurança Rj", local:"Operacional", cargo:"", area:"Administrativo Diurno", inicio:"10/09/2026", fim:"29/09/2026"},
-{codigo:"19588", nome:"Pedro Ernesto dos Santos Moraes", empresa:"Segurança", cliente:"Barki", local:"Barki Centro Empresarial", cargo:"", area:"Alfa Diurno", inicio:"08/09/2026", fim:"07/10/2026"},
-{codigo:"19590", nome:"Washington Oliveira da Silva", empresa:"Segurança", cliente:"Reserva Técnica", local:"Rj Ferista", cargo:"", area:"Alfa Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
-{codigo:"19621", nome:"Ricardo Moraes da Silva", empresa:"Segurança", cliente:"Joao Moreira Salles", local:"Joao Moreira Salles", cargo:"", area:"Alfa Diurno", inicio:"09/09/2026", fim:"08/10/2026"},
-{codigo:"19629", nome:"Genilson Santos de Oliveira", empresa:"Segurança", cliente:"Arena Leme Hotel", local:"Arena Leme Hotel", cargo:"", area:"Omega Diurno", inicio:"06/08/2026", fim:"04/09/2026"},
-{codigo:"19699", nome:"Jhonathan Cleber Paiva dos Santos Silva", empresa:"Segurança", cliente:"Haganá Segurança Rj", local:"Rh", cargo:"", area:"Administrativo Diurno", inicio:"01/09/2026", fim:"15/09/2026"},
-{codigo:"19907", nome:"Janaina Mariano P da Silva", empresa:"Segurança", cliente:"Haganá Segurança Rj", local:"Adm Operacional", cargo:"", area:"Administrativo Diurno", inicio:"08/09/2026", fim:"27/09/2026"},
-{codigo:"20014", nome:"Augusto Cesar Vieira", empresa:"Segurança", cliente:"Baker", local:"Baker - Btc Fundao", cargo:"", area:"Omega Diurno", inicio:"09/09/2026", fim:"08/10/2026"},
-{codigo:"20511", nome:"Jeison Goncalves Maia", empresa:"Segurança", cliente:"Hospital Prevent Senior", local:"Hospital Prevent Senior - Botafogo", cargo:"", area:"Omega Diurno", inicio:"08/09/2026", fim:"07/10/2026"},
-{codigo:"20586", nome:"Andrea Ramos Pereira", empresa:"Segurança", cliente:"Gavea Golf And Country Club", local:"Gavea Golf And Country Club", cargo:"", area:"Alfa Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
-{codigo:"20625", nome:"Edson Macedo de Carvalho", empresa:"Segurança", cliente:"Embaixada de Israel", local:"Embaixada de Israel", cargo:"", area:"Omega Diurno", inicio:"10/08/2026", fim:"29/08/2026"},
-{codigo:"21028", nome:"Nayanne Cristina Rosa Melo", empresa:"Segurança", cliente:"Baker", local:"Baker - Btc Fundao", cargo:"", area:"Omega Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
-{codigo:"21450", nome:"Thiago Soares de Magalhaes", empresa:"Segurança", cliente:"Baker", local:"Baker - Niteroi", cargo:"", area:"Omega Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
-{codigo:"21689", nome:"Luiz Paulo Fernandes da Silva", empresa:"Segurança", cliente:"Cond Chácara Froes", local:"Cond Chácara Froes", cargo:"", area:"Omega Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
-{codigo:"21824", nome:"Charles Max da Silva de Jesus", empresa:"Segurança", cliente:"Reserva Técnica", local:"Rj Ferista", cargo:"", area:"Alfa Diurno", inicio:"12/08/2026", fim:"31/08/2026"},
-{codigo:"21898", nome:"Luiz Correia de Morais", empresa:"Segurança", cliente:"Baker", local:"Baker - Montagem Explosivos", cargo:"", area:"Gama Diurno", inicio:"09/09/2026", fim:"28/09/2026"},
-{codigo:"21958", nome:"Matheus Mesquita Aragao", empresa:"Segurança", cliente:"Reserva Técnica", local:"Rj Ferista", cargo:"", area:"Alfa Diurno", inicio:"09/09/2026", fim:"08/10/2026"},
-{codigo:"22419", nome:"Marcio Pereira da Silva", empresa:"Segurança", cliente:"Reserva Técnica", local:"Rj Reserva Tecnica Alfa", cargo:"", area:"Alfa Diurno", inicio:"08/09/2026", fim:"07/10/2026"},
-{codigo:"22916", nome:"Antonio Carlos Ferreira Silva de Sales", empresa:"Segurança", cliente:"Ibm", local:"Ibm", cargo:"", area:"Omega Diurno", inicio:"03/08/2026", fim:"01/09/2026"},
-{codigo:"22985", nome:"Thaynara de Souza Ribeiro Aragao", empresa:"Segurança", cliente:"Baker", local:"Baker - Niteroi", cargo:"", area:"Omega Diurno", inicio:"09/09/2026", fim:"08/10/2026"},
-{codigo:"23000", nome:"Cleber Dias dos Santos", empresa:"Segurança", cliente:"Reserva Técnica", local:"Rj Ferista", cargo:"", area:"Alfa Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
-{codigo:"23920", nome:"Eduardo Antonio Vidal", empresa:"Segurança", cliente:"Terminal Garagem Menezes Cortes", local:"Terminal Garagem Menezes Cortes", cargo:"", area:"Omega Diurno", inicio:"15/09/2026", fim:"14/10/2026"},
-{codigo:"23927", nome:"Laercio Casemiro Mendes", empresa:"Segurança", cliente:"Terminal Garagem Menezes Cortes", local:"Terminal Garagem Menezes Cortes", cargo:"", area:"Omega Diurno", inicio:"10/08/2026", fim:"08/09/2026"},
-{codigo:"23931", nome:"Natanael Manoel do Espirito Santo", empresa:"Segurança", cliente:"Terminal Garagem Menezes Cortes", local:"Terminal Garagem Menezes Cortes", cargo:"", area:"Omega Diurno", inicio:"02/09/2026", fim:"21/09/2026"},
-{codigo:"23933", nome:"Robson Muniz Silva", empresa:"Segurança", cliente:"Terminal Garagem Menezes Cortes", local:"Terminal Garagem Menezes Cortes", cargo:"", area:"Omega Diurno", inicio:"28/09/2026", fim:"27/10/2026"},
-{codigo:"23936", nome:"Wenderson Lourenco dos Santos", empresa:"Segurança", cliente:"Terminal Garagem Menezes Cortes", local:"Terminal Garagem Menezes Cortes", cargo:"", area:"Omega Diurno", inicio:"02/09/2026", fim:"01/10/2026"},
-{codigo:"24118", nome:"Frerlan Cezar Queiroz", empresa:"Segurança", cliente:"Venezuela", local:"Venezuela", cargo:"", area:"Omega Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
-{codigo:"24387", nome:"Luis Claudio Araujo", empresa:"Segurança", cliente:"Terminal Garagem Menezes Cortes", local:"Terminal Garagem Menezes Cortes", cargo:"", area:"Omega Diurno", inicio:"28/09/2026", fim:"17/10/2026"},
-{codigo:"24480", nome:"Vinicius Padilha do Nascimento", empresa:"Segurança", cliente:"Assoc Pedra de Itauna", local:"Assoc Pedra de Itauna", cargo:"", area:"Alfa Diurno", inicio:"08/08/2026", fim:"06/09/2026"},
-{codigo:"24545", nome:"Cosme Andre Freire da Silva", empresa:"Segurança", cliente:"Hospital Prevent Senior", local:"Hospital Prevent Senior - Botafogo", cargo:"", area:"Omega Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
-{codigo:"24577", nome:"Angelo de Azevedo Ferreira", empresa:"Segurança", cliente:"Baker", local:"Baker - Niteroi", cargo:"", area:"Omega Diurno", inicio:"11/08/2026", fim:"30/08/2026"},
-{codigo:"25262", nome:"Gilcimar Lopes", empresa:"Segurança", cliente:"Reserva Técnica", local:"Rj Reserva Tecnica Alfa", cargo:"", area:"Alfa Diurno", inicio:"12/09/2026", fim:"01/10/2026"},
-{codigo:"25537", nome:"Marlon Alexandre Orozco da Silva", empresa:"Segurança", cliente:"Reserva Técnica", local:"Rj Reserva Especial/elite Rio de Janeiro", cargo:"", area:"Alfa Diurno", inicio:"11/09/2026", fim:"30/09/2026"},
-{codigo:"25553", nome:"Anderson Caetano Moura Teixeira", empresa:"Segurança", cliente:"Centro Empresarial Luiz Severiano", local:"Centro Empresarial Luiz Severiano", cargo:"", area:"Omega Diurno", inicio:"09/08/2026", fim:"07/09/2026"},
-{codigo:"26412", nome:"Andrey Dornellas Travassos", empresa:"Segurança", cliente:"Haganá Segurança Rj", local:"Adm Operacional", cargo:"", area:"Administrativo Diurno", inicio:"06/08/2026", fim:"04/09/2026"},
-{codigo:"19995", nome:"Kassiane Dias Pires", empresa:"Segurança", cliente:"Haganá Segurança Rj", local:"Adm Operacional", cargo:"", area:"Administrativo Diurno", inicio:"03/08/2026", fim:"22/08/2026"},
-{codigo:"15801", nome:"Willis C Monteiro de Barros", empresa:"Segurança", cliente:"Centro Empresarial Luiz Severiano", local:"Centro Empresarial Luiz Severiano", cargo:"", area:"Omega Noturno", inicio:"09/09/2026", fim:"08/10/2026"},
-{codigo:"15869", nome:"Raquel Jacintho do Carmo", empresa:"Segurança", cliente:"Shopping da Caixa", local:"Shopping da Caixa", cargo:"", area:"Alfa Noturno", inicio:"08/08/2026", fim:"06/09/2026"},
-{codigo:"16292", nome:"Jones Maceio Freire da Silva", empresa:"Segurança", cliente:"Reserva Técnica", local:"Rj Reserva Tecnica Alfa", cargo:"", area:"Alfa Noturno", inicio:"11/09/2026", fim:"30/09/2026"},
-{codigo:"16568", nome:"Felipe da Costa", empresa:"Segurança", cliente:"Joao Moreira Salles", local:"Joao Moreira Salles", cargo:"", area:"Alfa Noturno", inicio:"08/09/2026", fim:"07/10/2026"},
-{codigo:"16644", nome:"Wellington dos Santos Marcelino", empresa:"Segurança", cliente:"Sao Luiz", local:"Sao Luiz", cargo:"", area:"Omega Noturno", inicio:"11/09/2026", fim:"30/09/2026"},
-{codigo:"17239", nome:"Antonio Carlos Rocha", empresa:"Segurança", cliente:"Colegio Cruzeiro", local:"Colegio Cruzeiro Cruzeirinho", cargo:"", area:"Alfa Noturno", inicio:"03/09/2026", fim:"02/10/2026"},
-{codigo:"17254", nome:"Mario Roberto Vieira de Oliveira", empresa:"Segurança", cliente:"Albert Einstein", local:"Albert Einstein - Unid. Botafogo", cargo:"", area:"Omega Noturno", inicio:"08/09/2026", fim:"01/10/2026"},
-{codigo:"18281", nome:"Wellington Duraes de Sant Anna", empresa:"Segurança", cliente:"Haganá Segurança Rj", local:"Operacional", cargo:"", area:"Administrativo Noturno", inicio:"10/09/2026", fim:"29/09/2026"},
-{codigo:"18620", nome:"Jonathas Paulino Alvim", empresa:"Segurança", cliente:"Cond Cyano Exclusive Residences", local:"Cond Cyano Exclusive Residences", cargo:"", area:"Alfa Noturno", inicio:"09/09/2026", fim:"08/10/2026"},
-{codigo:"19631", nome:"Marco Antonio Araujo da Silva", empresa:"Segurança", cliente:"Venezuela", local:"Venezuela", cargo:"", area:"Omega Noturno", inicio:"09/09/2026", fim:"02/10/2026"},
-{codigo:"19692", nome:"Flavio Teixeira", empresa:"Segurança", cliente:"Condominio River Droite", local:"Condominio River Droite", cargo:"", area:"Alfa Noturno", inicio:"08/08/2026", fim:"06/09/2026"},
-{codigo:"20251", nome:"Reinaldo Arao da Silva de Sousa", empresa:"Segurança", cliente:"Saint Barth", local:"Saint Barth", cargo:"", area:"Alfa Noturno", inicio:"11/08/2026", fim:"30/08/2026"},
-{codigo:"20546", nome:"Marcos Roberto Lopes Ferreira", empresa:"Segurança", cliente:"Marilia Ferreira de Araujo Coutinho", local:"Marilia Ferreira de Araujo Coutinho", cargo:"", area:"Omega Noturno", inicio:"08/08/2026", fim:"27/08/2026"},
-{codigo:"22318", nome:"Arison da Silva Galdino", empresa:"Segurança", cliente:"Joao Moreira Salles", local:"Joao Moreira Salles", cargo:"", area:"Alfa Noturno", inicio:"09/09/2026", fim:"08/10/2026"},
-{codigo:"22437", nome:"Sandro Alves de Oliveira", empresa:"Segurança", cliente:"Barki", local:"Barki Centro Empresarial", cargo:"", area:"Alfa Noturno", inicio:"09/09/2026", fim:"08/10/2026"},
-{codigo:"23926", nome:"Julio Tenorio", empresa:"Segurança", cliente:"Terminal Garagem Menezes Cortes", local:"Terminal Garagem Menezes Cortes", cargo:"", area:"Omega Noturno", inicio:"09/08/2026", fim:"07/09/2026"},
-{codigo:"24026", nome:"Jair do Nascimento Carvalho", empresa:"Segurança", cliente:"Baker", local:"Baker", cargo:"", area:"Gama Noturno", inicio:"10/08/2026", fim:"29/08/2026"},
-{codigo:"24113", nome:"Paulo Anselmo Vieira Braganca Ribeiro", empresa:"Segurança", cliente:"Reserva Técnica", local:"Rj Reserva Tecnica Alfa", cargo:"", area:"Alfa Noturno", inicio:"12/09/2026", fim:"01/10/2026"},
-{codigo:"24258", nome:"Joao Paulo da Silva Ribeiro", empresa:"Segurança", cliente:"Baker", local:"Baker", cargo:"", area:"Gama Noturno", inicio:"11/08/2026", fim:"30/08/2026"},
-{codigo:"24306", nome:"Roger Pereira Rodrigues", empresa:"Segurança", cliente:"Condominio Vale de Itaipu", local:"Condominio Vale de Itaipu", cargo:"", area:"Omega Noturno", inicio:"08/09/2026", fim:"07/10/2026"},
-{codigo:"24576", nome:"Daniel Wilson Lima da Silva", empresa:"Segurança", cliente:"Albert Einstein", local:"Albert Einstein - Unid. Botafogo", cargo:"", area:"Omega Noturno", inicio:"08/08/2026", fim:"06/09/2026"},
-{codigo:"24851", nome:"Janaina Peres", empresa:"Segurança", cliente:"Reserva Técnica", local:"Rj Ferista", cargo:"", area:"Alfa Noturno", inicio:"12/08/2026", fim:"31/08/2026"},
-{codigo:"25259", nome:"Alef Carlos Monteiro da Silva", empresa:"Segurança", cliente:"Igua Rio de Janeiro", local:"Igua Rio de Janeiro", cargo:"", area:"Omega Noturno", inicio:"09/08/2026", fim:"07/09/2026"},
-{codigo:"25464", nome:"Michael Douglas Oliveira Ferreira", empresa:"Segurança", cliente:"Cd Logistico Santa Cruz", local:"Cd Logistico Santa Cruz", cargo:"", area:"Alfa Noturno", inicio:"12/09/2026", fim:"01/10/2026"},
-{codigo:"26611", nome:"Elizangela Coelho Paiva", empresa:"Segurança", cliente:"Reserva Técnica", local:"Rj Reserva Especial/elite Rio de Janeiro", cargo:"", area:"Alfa Noturno", inicio:"12/08/2026", fim:"31/08/2026"},
-{codigo:"26612", nome:"Jorge Luiz da Silva Oliveira", empresa:"Segurança", cliente:"Reserva Técnica", local:"Rj Ferista", cargo:"", area:"Alfa Noturno", inicio:"09/09/2026", fim:"28/09/2026"},
-{codigo:"28009", nome:"Tiago Costa de Assis", empresa:"Segurança", cliente:"Haganá Segurança Rj", local:"Adm Operacional", cargo:"", area:"Administrativo Noturno", inicio:"12/09/2026", fim:"01/10/2026"},
+{codigo:"15757", nome:"Paulo Marques Franco Costa", empresa:"Segurança", cliente:"Barki Centro Empresarial", local:"Barki Centro Empresarial", cargo:"Vigilante", area:"", inicio:"09/11/2026", fim:"08/12/2026"},
+{codigo:"15758", nome:"Jorge Luiz do N Sobrinho", empresa:"Segurança", cliente:"Odeon", local:"Odeon", cargo:"Vigilante Seg.pessoal", area:"", inicio:"12/11/2026", fim:"01/12/2026"},
+{codigo:"15767", nome:"Eduardo Miranda da Silva Ramos", empresa:"Segurança", cliente:"Colegio Cruzeiro Jacarepagua", local:"Colegio Cruzeiro Jacarepagua", cargo:"Supervisor de Posto", area:"", inicio:"09/11/2026", fim:"08/12/2026"},
+{codigo:"15871", nome:"Francisco Chaves Benvindo", empresa:"Segurança", cliente:"Shopping da Caixa", local:"Shopping da Caixa", cargo:"Fiscal de Posto", area:"", inicio:"14/11/2026", fim:"13/12/2026"},
+{codigo:"15906", nome:"Adilson dos Santos", empresa:"Segurança", cliente:"Rj Ferista", local:"Rj Ferista", cargo:"Vigilante", area:"", inicio:"09/11/2026", fim:"08/12/2026"},
+{codigo:"15943", nome:"Wagner Lopes da Silva", empresa:"Segurança", cliente:"Cond Chácara Froes", local:"Cond Chácara Froes", cargo:"Vigilante", area:"", inicio:"09/11/2026", fim:"08/12/2026"},
+{codigo:"17283", nome:"Lourenco Rodrigues dos Santos", empresa:"Segurança", cliente:"Joao Moreira Salles", local:"Joao Moreira Salles", cargo:"Vigilante Seg.pessoal", area:"", inicio:"09/11/2026", fim:"08/12/2026"},
+{codigo:"17428", nome:"Carlos Alexandre de Moraes Vidal", empresa:"Segurança", cliente:"Condominio River Droite", local:"Condominio River Droite", cargo:"Supervisor de Posto", area:"", inicio:"09/11/2026", fim:"08/12/2026"},
+{codigo:"18382", nome:"Magno Moret de Souza", empresa:"Segurança", cliente:"Baker - Montagem Explosivos", local:"Baker - Montagem Explosivos", cargo:"Vigilante", area:"", inicio:"13/11/2026", fim:"02/12/2026"},
+{codigo:"18820", nome:"Marco Aurelio Marques de Paiva", empresa:"Segurança", cliente:"Sol de Marapendi", local:"Sol de Marapendi", cargo:"Vigilante", area:"", inicio:"09/11/2026", fim:"08/12/2026"},
+{codigo:"19589", nome:"Jardson Fabiano Praxedes dos Santos", empresa:"Segurança", cliente:"Baker - Niteroi", local:"Baker - Niteroi", cargo:"Vigilante", area:"", inicio:"09/11/2026", fim:"08/12/2026"},
+{codigo:"19684", nome:"Sebastiao Vander de Souza Rosario", empresa:"Segurança", cliente:"Sao Luiz", local:"Sao Luiz", cargo:"Vigilante Seg.pessoal", area:"", inicio:"09/11/2026", fim:"08/12/2026"},
+{codigo:"19980", nome:"Rafael Soares dos Santos", empresa:"Segurança", cliente:"Rj Ferista", local:"Rj Ferista", cargo:"Vigilante", area:"", inicio:"08/11/2026", fim:"07/12/2026"},
+{codigo:"20253", nome:"Vinicius da Silva Marques", empresa:"Serviços", cliente:"Aquarius Residencial", local:"Aquarius Residencial", cargo:"Fiscal de Posto", area:"", inicio:"09/11/2026", fim:"08/12/2026"},
+{codigo:"20829", nome:"Jefferson Araujo Mendes", empresa:"Segurança", cliente:"Operacional", local:"Operacional", cargo:"Motorista Operacional", area:"", inicio:"12/11/2026", fim:"11/12/2026"},
+{codigo:"21345", nome:"Eliezer Bispo Lima", empresa:"Segurança", cliente:"Cond. Saint Tropez", local:"Cond. Saint Tropez", cargo:"Vigilante Seg.pessoal", area:"", inicio:"11/11/2026", fim:"30/11/2026"},
+{codigo:"22247", nome:"Bruna Rodrigues dos Santos", empresa:"Segurança", cliente:"Baker - Niteroi", local:"Baker - Niteroi", cargo:"Vigilante", area:"", inicio:"08/11/2026", fim:"07/12/2026"},
+{codigo:"22302", nome:"Mateus Alves da Silva", empresa:"Segurança", cliente:"Arena Leme Hotel", local:"Arena Leme Hotel", cargo:"Vigilante", area:"", inicio:"09/11/2026", fim:"08/12/2026"},
+{codigo:"22367", nome:"Natalia Cristina da Silva Lopes", empresa:"Segurança", cliente:"Baker - Btc Fundao", local:"Baker - Btc Fundao", cargo:"Vigilante", area:"", inicio:"09/11/2026", fim:"08/12/2026"},
+{codigo:"22820", nome:"Luciano Santarone Mesquita", empresa:"Segurança", cliente:"Albert Einstein - Unid. Botafogo", local:"Albert Einstein - Unid. Botafogo", cargo:"Vigilante", area:"", inicio:"08/11/2026", fim:"07/12/2026"},
+{codigo:"22917", nome:"Jonas Roberto Raimundo Costa Albuquerque", empresa:"Segurança", cliente:"Cd Logistico Santa Cruz", local:"Cd Logistico Santa Cruz", cargo:"Vigilante", area:"", inicio:"09/11/2026", fim:"08/12/2026"},
+{codigo:"22918", nome:"Valdetrudes Barros da Silva", empresa:"Segurança", cliente:"Rj Ferista", local:"Rj Ferista", cargo:"Vigilante", area:"", inicio:"08/11/2026", fim:"07/12/2026"},
+{codigo:"23530", nome:"Djair Rodrigues dos Santos", empresa:"Segurança", cliente:"Cond. Saint Tropez", local:"Cond. Saint Tropez", cargo:"Vigilante", area:"", inicio:"09/11/2026", fim:"08/12/2026"},
+{codigo:"24525", nome:"Marcelo Jose Lopes de Oliveira", empresa:"Segurança", cliente:"Rj Ferista", local:"Rj Ferista", cargo:"Vigilante", area:"", inicio:"08/11/2026", fim:"07/12/2026"},
+{codigo:"24607", nome:"Daniel Martins", empresa:"Segurança", cliente:"Cond Chácara Froes", local:"Cond Chácara Froes", cargo:"Porteiro", area:"", inicio:"11/11/2026", fim:"30/11/2026"},
+{codigo:"25086", nome:"Matheus Felipe de Souza dos Prazeres", empresa:"Segurança", cliente:"Assoc Pedra de Itauna", local:"Assoc Pedra de Itauna", cargo:"Supervisor de Posto", area:"", inicio:"09/11/2026", fim:"08/12/2026"},
+{codigo:"25171", nome:"Luiz Fernando Costa Sant Anna", empresa:"Segurança", cliente:"Rj Ferista", local:"Rj Ferista", cargo:"Vigilante", area:"", inicio:"08/11/2026", fim:"07/12/2026"},
+{codigo:"25197", nome:"Rodrigo Santos Estevam", empresa:"Segurança", cliente:"Rj Reserva Omega", local:"Rj Reserva Omega", cargo:"Vigilante", area:"", inicio:"09/11/2026", fim:"08/12/2026"},
+{codigo:"25346", nome:"Julia da Silva Lima", empresa:"Segurança", cliente:"Baker - Niteroi", local:"Baker - Niteroi", cargo:"Vigilante", area:"", inicio:"12/11/2026", fim:"01/12/2026"},
+{codigo:"25630", nome:"Robert Gerson Siqueira de Franca", empresa:"Segurança", cliente:"Rj Reserva Tecnica Alfa", local:"Rj Reserva Tecnica Alfa", cargo:"Vigilante", area:"", inicio:"09/11/2026", fim:"02/12/2026"},
+{codigo:"25718", nome:"Flavio Magela da Silva Ferreira", empresa:"Segurança", cliente:"Assoc. Kaasas", local:"Assoc. Kaasas", cargo:"Vigilante", area:"", inicio:"08/11/2026", fim:"07/12/2026"},
+{codigo:"26225", nome:"Fagner Luiz Amorim Lima", empresa:"Segurança", cliente:"Assoc. Kaasas", local:"Assoc. Kaasas", cargo:"Vigilante", area:"", inicio:"12/11/2026", fim:"01/12/2026"},
+{codigo:"27687", nome:"Bruno de Sousa Alves Bezerra", empresa:"Segurança", cliente:"Bothanica Nature", local:"Bothanica Nature", cargo:"Vigilante Motor/motociclista", area:"", inicio:"09/11/2026", fim:"08/12/2026"},
+{codigo:"29369", nome:"Anderson Francisco da Silva", empresa:"Serviços", cliente:"Lac Premier", local:"Lac Premier", cargo:"Porteiro", area:"", inicio:"12/11/2026", fim:"01/12/2026"},
+{codigo:"32164", nome:"Douglas Ferreira de Queiroz", empresa:"Serviços", cliente:"Lac Premier", local:"Lac Premier", cargo:"Encarregado de Posto", area:"", inicio:"08/11/2026", fim:"07/12/2026"},
+{codigo:"39566", nome:"Raquel Pereira Picoli", empresa:"Segurança", cliente:"Baker", local:"Baker", cargo:"Operador de CFTV Bilingue", area:"", inicio:"06/11/2026", fim:"20/11/2026"},
+{codigo:"44781", nome:"Wallace dos Santos Saraiva Oliveira", empresa:"Serviços", cliente:"Lac Premier", local:"Lac Premier", cargo:"Vigia", area:"", inicio:"09/11/2026", fim:"08/12/2026"},
+{codigo:"45439", nome:"Douglas Silva dos Santos", empresa:"Serviços", cliente:"Lac Premier", local:"Lac Premier", cargo:"Porteiro", area:"", inicio:"09/11/2026", fim:"08/12/2026"},
+{codigo:"52662", nome:"Antonia Carolina de Sousa Rodrigues", empresa:"Serviços", cliente:"Tom Delfim Moreira", local:"Tom Delfim Moreira", cargo:"Zelador", area:"", inicio:"09/11/2026", fim:"28/11/2026"},
+{codigo:"54129", nome:"Wagner Alfradique Ferreira", empresa:"Segurança", cliente:"Saint Barth", local:"Saint Barth", cargo:"Operador CFTV", area:"", inicio:"08/11/2026", fim:"07/12/2026"},
+{codigo:"54167", nome:"Renato Martins Duarte", empresa:"Serviços", cliente:"Viktoria Park", local:"Viktoria Park", cargo:"Porteiro", area:"", inicio:"08/11/2026", fim:"07/12/2026"},
+{codigo:"55060", nome:"Nilson Ribeiro da Silva", empresa:"Serviços", cliente:"Rj Reserva Omega", local:"Rj Reserva Omega", cargo:"Vigia", area:"", inicio:"09/11/2026", fim:"08/12/2026"},
+{codigo:"55274", nome:"Graziele Ramos de Carvalho de Oliveira", empresa:"Serviços", cliente:"Leblon Prime Corporate", local:"Leblon Prime Corporate", cargo:"Porteiro", area:"", inicio:"09/11/2026", fim:"08/12/2026"},
+{codigo:"56185", nome:"Beatriz Mello do Espirito Santo", empresa:"Segurança", cliente:"Centro Empresarial Luiz Severiano", local:"Centro Empresarial Luiz Severiano", cargo:"Porteiro", area:"", inicio:"13/11/2026", fim:"02/12/2026"},
+{codigo:"56998", nome:"Lucilene de Barros Rezende", empresa:"Segurança", cliente:"Assoc Pedra de Itauna", local:"Assoc Pedra de Itauna", cargo:"Porteiro", area:"", inicio:"10/11/2026", fim:"09/12/2026"},
+{codigo:"59890", nome:"Leonardo Antonio Silva dos Santos", empresa:"Serviços", cliente:"Arua", local:"Arua", cargo:"Vigia Condutor", area:"", inicio:"09/11/2026", fim:"08/12/2026"},
+{codigo:"59965", nome:"Josiane dos Santos Batista", empresa:"Segurança", cliente:"Saint Barth", local:"Saint Barth", cargo:"Porteiro", area:"", inicio:"09/11/2026", fim:"08/12/2026"},
+{codigo:"59967", nome:"Leandro Castro Oliveira", empresa:"Segurança", cliente:"Venezuela", local:"Venezuela", cargo:"Vigia", area:"", inicio:"08/11/2026", fim:"07/12/2026"},
+{codigo:"60023", nome:"Felipe Goncalves de Souza", empresa:"Serviços", cliente:"Vivaz Marechal Rondon", local:"Vivaz Marechal Rondon", cargo:"Vigia", area:"", inicio:"08/11/2026", fim:"07/12/2026"},
+{codigo:"60550", nome:"Lucas Barboza de Carvalho", empresa:"Serviços", cliente:"Cond Edif Villa Di Palma", local:"Cond Edif Villa Di Palma", cargo:"Vigia", area:"", inicio:"11/11/2026", fim:"30/11/2026"},
+{codigo:"61281", nome:"Renata Januario Motta", empresa:"Serviços", cliente:"Condominio Chacara San Francisco", local:"Condominio Chacara San Francisco", cargo:"Vigia", area:"", inicio:"08/11/2026", fim:"07/12/2026"},
+{codigo:"63221", nome:"Joelson Bruno de Souza Barros", empresa:"Serviços", cliente:"Rj Reserva Facilities", local:"Rj Reserva Facilities", cargo:"Zelador", area:"", inicio:"08/11/2026", fim:"07/12/2026"},
+{codigo:"63663", nome:"Thiago da Silva Mendes", empresa:"Serviços", cliente:"Cond Grupamento Resid Via Privilege", local:"Cond Grupamento Resid Via Privilege", cargo:"Porteiro", area:"", inicio:"09/11/2026", fim:"08/12/2026"},
+{codigo:"65179", nome:"Andre Luiz Oliveira Lacerda", empresa:"Segurança", cliente:"Saint Barth", local:"Saint Barth", cargo:"Mensageiro", area:"", inicio:"09/11/2026", fim:"08/12/2026"},
 ];
 
 // ---------- store (fonte única da verdade) ----------
@@ -449,13 +380,13 @@ const records = [
 // (chave STORAGE_KEY) sempre que muda. Assim, os arquivos importados continuam
 // disponíveis mesmo depois de fechar a aba ou reabrir o arquivo depois.
 //
-// A chave mudou de v1 para v2 quando os dados-semente passaram a vir do Excel
-// Ferias_RJ.xlsx (31/08/2026) em vez dos PDFs antigos (jul/2026). Isso separa
+// A chave mudou de v2 para v3 quando os dados-semente passaram a vir do Excel
+// PROGRAMAÇÃO_DE_FÉRIAS_NOVEMBRO_UNIFICADA.xlsx (26/10/2026). Isso separa
 // de propósito o armazenamento antigo do novo: quem já tinha aberto a versão
 // v1 neste navegador não vai ver aqueles registros de julho (a maioria já
 // teria retornado mesmo) misturados com o período atual. Para reiniciar de
 // novo no futuro, basta subir este número (v2 -> v3) de novo.
-const STORAGE_KEY = 'hagana-ferias-store-v2';
+const STORAGE_KEY = 'hagana-ferias-store-v3';
 const store = new Map();
 
 function saveStore(){
@@ -864,6 +795,7 @@ const EXCEL_HEADER_ALIASES = {
   NOMEEMPRESA: ['NOMEEMPRESA','EMPRESA'],
   NOMECLIENTE: ['NOMECLIENTE','CLIENTE'],
   NOMELOCAL: ['NOMELOCAL','LOCAL'],
+  NOMECARGO: ['NOMECARGO','CARGO'],
   NOMEAREA: ['NOMEAREA','AREA'],
   DTINICIOFERIAS: ['DTINICIOFERIAS','DATAINICIOFERIAS','INICIOFERIAS','DTINICIO'],
   DTFIMFERIAS: ['DTFIMFERIAS','DATAFIMFERIAS','FIMFERIAS','DTFIM'],
@@ -889,6 +821,18 @@ function mapEmpresaExcel(val){
   if(up.includes('SEGURAN')) return 'Segurança';
   if(up.includes('SERVI')) return 'Serviços';
   return 'Serviços'; // padrão conservador se o texto não bater com nenhum dos dois
+}
+
+// Planilhas sem coluna de empresa (ex.: programação de férias unificada): a empresa é
+// inferida. Cargo de vigilante => Segurança; senão, usa a mesma empresa que o
+// cliente/local já tem nos registros existentes; na dúvida, Serviços.
+function inferEmpresa(cargo, cliente){
+  if(normalizeHeader(cargo).includes('VIGILANTE')) return 'Segurança';
+  const alvo = normalizeHeader(cliente);
+  for(const r of store.values()){
+    if(normalizeHeader(r.cliente)===alvo || normalizeHeader(r.local)===alvo) return r.empresa;
+  }
+  return 'Serviços';
 }
 
 // Converte uma célula de data do Excel (Date, número serial, ou texto) para "dd/mm/yyyy".
@@ -927,7 +871,8 @@ function parseExcelRows(rows){
   if(rows.length === 0) return {records:[], warnings:[]};
   const headerMap = mapExcelHeaders(rows[0]);
 
-  const required = ['RE','NOMEFUNC','NOMEEMPRESA','NOMECLIENTE','DTINICIOFERIAS','DTFIMFERIAS'];
+  const required = ['RE','NOMEFUNC','DTINICIOFERIAS','DTFIMFERIAS'];
+  if(!('NOMECLIENTE' in headerMap) && !('NOMELOCAL' in headerMap)) required.push('NOMELOCAL'); // precisa de cliente OU local
   const missing = required.filter(k => !(k in headerMap));
   if(missing.length > 0){
     return {records:[], warnings:[], missingColumns:missing};
@@ -954,17 +899,19 @@ function parseExcelRows(rows){
       continue;
     }
 
-    const clienteRaw = String(row[headerMap.NOMECLIENTE] ?? '').trim();
-    const localRaw = headerMap.NOMELOCAL!==undefined ? String(row[headerMap.NOMELOCAL] ?? '').trim() : clienteRaw;
+    const localRaw0 = headerMap.NOMELOCAL!==undefined ? String(row[headerMap.NOMELOCAL] ?? '').trim() : '';
+    const clienteRaw = headerMap.NOMECLIENTE!==undefined ? String(row[headerMap.NOMECLIENTE] ?? '').trim() : localRaw0;
+    const localRaw = localRaw0 || clienteRaw;
+    const cargoRaw = headerMap.NOMECARGO!==undefined ? String(row[headerMap.NOMECARGO] ?? '').trim() : '';
     const areaRaw = headerMap.NOMEAREA!==undefined ? String(row[headerMap.NOMEAREA] ?? '').trim() : '';
 
     records.push({
       codigo,
       nome: titleCase(nomeRaw),
-      empresa: mapEmpresaExcel(row[headerMap.NOMEEMPRESA]),
+      empresa: headerMap.NOMEEMPRESA!==undefined ? mapEmpresaExcel(row[headerMap.NOMEEMPRESA]) : inferEmpresa(cargoRaw, clienteRaw),
       cliente: titleCase(clienteRaw),
       local: titleCase(localRaw || clienteRaw),
-      cargo: '', // não existe nesse formato de planilha
+      cargo: cargoRaw ? titleCase(cargoRaw) : '',
       area: areaRaw ? titleCase(areaRaw) : '',
       inicio, fim
     });
